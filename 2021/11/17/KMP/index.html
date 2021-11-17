@@ -24,7 +24,7 @@
 
   
 
-  <title>about | YoungJayz</title>
+  <title>KMP | YoungJayz</title>
 
   
 
@@ -45,7 +45,7 @@
   <div class="root-container">
     
 <!-- header container -->
-<header class="header-container">
+<header class="header-container post">
   
     <div class="post-image" style="background-image: url(https://qiniu.sukoshi.xyz/src/images/68686407_p0.jpg)"></div>
   
@@ -99,41 +99,84 @@
 
   
   
-
-  
-  
     <div class="header-content">
-      <div class="post-text layout-block layout-padding">
-        <h1 class="title-wrap">about</h1>
-        
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">KMP</h1>
+          <h2 class="title-sub-wrap">
+            <strong>jiajieZeng</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2021-11-17T14:45:46.000Z" itemprop="datePublished">2021-11-17</time>
+          </h2>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/categories/algorithm/">📒 algorithm</a></li>
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+</ul>
+        </div>
       </div>
     </div>
+  
+
+  
   
   
 </header>
 
-    <!-- 分页(其他自定义页面) -->
+    <!-- 文章 -->
 
-<!-- 自定义页面 -->
-
+<!-- 文章内容 -->
 <div class="body-container">
   <article class="content-container layout-block post-container">
     <div class="article-info">
       
+      
+      
+      
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h1 id="歡迎來到我的個人BLOG"><a href="#歡迎來到我的個人BLOG" class="headerlink" title="歡迎來到我的個人BLOG"></a>歡迎來到我的個人BLOG</h1><h2 id="你好！"><a href="#你好！" class="headerlink" title="你好！"></a>你好！</h2><p>​    想要了解關於我的東西？我僅僅是一個新手程序員，這是我花了超級長時間才搭建成功的個人博客。</p>
-<h2 id="記錄"><a href="#記錄" class="headerlink" title="記錄"></a>記錄</h2><p>​    這個博客，主要還是作為我的大學雜記吧。</p>
-<h1 id="2021-10-21-華南師範大學”CS”杯"><a href="#2021-10-21-華南師範大學”CS”杯" class="headerlink" title="2021.10.21 華南師範大學”CS”杯"></a>2021.10.21 華南師範大學”CS”杯</h1><h2 id="水來的三等獎哈哈哈哈"><a href="#水來的三等獎哈哈哈哈" class="headerlink" title="水來的三等獎哈哈哈哈"></a>水來的三等獎哈哈哈哈</h2><p><img src="https://i.loli.net/2021/11/11/Il9QXLYUPgkcmKh.jpg" alt="0cd0b6a2b1dc82f75aae6ff807139b6.jpg"></p>
-<h2 id="小獎品"><a href="#小獎品" class="headerlink" title="小獎品"></a>小獎品</h2><p><img src="https://i.loli.net/2021/10/31/fiBlrJwmXIZHDtW.jpg" alt="37f7369c11b294d8193d177483d9cf9.jpg"></p>
-<h1 id="2021-10-31洛谷百道水題紀念日"><a href="#2021-10-31洛谷百道水題紀念日" class="headerlink" title="2021.10.31洛谷百道水題紀念日"></a>2021.10.31洛谷百道水題紀念日</h1><p><img src="https://i.loli.net/2021/10/31/SlWzY6IQVJqKNBa.png" alt="b0938d503c1272d28db8a4664c4d9da.png"></p>
+        <h1 id="KMP初步"><a href="#KMP初步" class="headerlink" title="KMP初步"></a>KMP初步</h1><p>此处把字符串的长度储存在第一个位置中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getNext</span><span class="params">(<span class="keyword">char</span> a[], <span class="keyword">int</span>* next)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i, j;</span><br><span class="line">	i = <span class="number">1</span>;</span><br><span class="line">	j = <span class="number">0</span>;</span><br><span class="line">	next[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (i &lt; a[<span class="number">0</span>]) &#123;</span><br><span class="line">		<span class="comment">//a[i]是后缀的单个字符,a[j]是前缀的单个字符</span></span><br><span class="line">		<span class="keyword">if</span> (j == <span class="number">0</span> || a[i] == a[j]) &#123;</span><br><span class="line">			++i;</span><br><span class="line">			++j;</span><br><span class="line">			<span class="comment">//字符与前缀字符不同</span></span><br><span class="line">			<span class="keyword">if</span> (a[i] != a[j]) &#123;</span><br><span class="line">				<span class="comment">//j 为 next在i位置的值</span></span><br><span class="line">				next[i] = j;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">//前缀字符相同，将前缀字符的next值赋给next在i位置的值</span></span><br><span class="line">				next[i] = next[j];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//字符不同，j值要回溯</span></span><br><span class="line">			j = next[j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回字串在主串第pos个字符之后的位置</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KMP</span><span class="params">(<span class="keyword">char</span> b[], <span class="keyword">char</span> a[], <span class="keyword">int</span> pos)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//此处的i用来标记主串当前位置的下标值，如果pos不是1,那么从pos开始配置</span></span><br><span class="line">	<span class="comment">//j用来标记字串在当前位置的下标值</span></span><br><span class="line">	<span class="keyword">int</span> i, j;</span><br><span class="line">	i = pos;</span><br><span class="line">	j = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> next[<span class="number">200</span>];</span><br><span class="line">	<span class="built_in">getNext</span>(a, next);</span><br><span class="line">	<span class="comment">//当i小于主串的长度且j小于字串的长度</span></span><br><span class="line">	<span class="keyword">while</span> (i &lt;= b[<span class="number">0</span>] &amp;&amp; j &lt;= a[<span class="number">0</span>]) &#123;</span><br><span class="line">		<span class="keyword">if</span> (j == <span class="number">0</span> || b[i] == a[i]) &#123;</span><br><span class="line">			++j;</span><br><span class="line">			++i;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//指针后退重新开始匹配，j后退</span></span><br><span class="line">			j = next[j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (j &gt; a[<span class="number">0</span>]) &#123;</span><br><span class="line">		<span class="keyword">return</span> i - a[<span class="number">0</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">char</span> b[] = <span class="string">&quot;9asdfghjkl&quot;</span>;</span><br><span class="line">	<span class="keyword">char</span> a[] = <span class="string">&quot;3jkl&quot;</span>;</span><br><span class="line">	<span class="keyword">int</span> pos = <span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="built_in">KMP</span>(b, a, pos));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
       </section>
 
       
       
+        <nav class="article-nav">
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2021/11/17/POJ/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">POJ</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
 
-      
-      
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
     </div>
     <div class="widget-info">
       <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
@@ -170,6 +213,8 @@
     </div>
   </div>
 </section>
+
+      
 
       
 <section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
@@ -221,7 +266,6 @@
     </div>
   </article>
 </div>
-
 
     <!-- footer container -->
 <footer id="footer" class="footer">
