@@ -1,81 +1,870 @@
-{% extends './includes/base.swig' %}
+<!--
+	作者：Sariay
+	时间：2018-08-26
+	描述：There may be a bug, but don't worry, Qiling(器灵) says that it can work normally! aha!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
 
-{% block extra_style %}
-    {% if theme.gitalk.enable %}
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    {% endif %}
-    <link rel='stylesheet' href="{{ url_for('./css/dracula.css') }}">
-{% endblock %}
+<head>
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      vector | YoungJayz
+    
+  </title>
+  <meta name="author" content="jiajieZeng">
+  <meta name="keywords" content="" />
+  <meta name="description" content="Keep著一顆上進的心" />
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
 
-{% block content %}
-    <div class="dis_flex_center al_lightbox_cnt al_full_cover">
-        <img class="al_lightbox_img"/>
-    </div>
-    <div class="al_page_background dis_flex_center al_full_cover"></div>
-    <div class="al_page_container">
-        <div class="al_pos_ab al_fake_background"></div>
-        <div class="al_main_container al_shadow al_main_page_container">
-            <article class="al_article">
-                <header>
-                    <h1 class="al_page_title">
-                        {{ page.title|default('No Title') }}
-                    </h1>
-                    <div class="al_page_info dis_flex">
-                        <div class="al_page_content_info">
-                            {{ page.date.format('ddd MMMM D, Y hh:mm A') }}
-                        </div>
+  <!-- css -->
+  
+<link rel="stylesheet" href="/css/Annie.css">
 
-                        {% if wordcount %}
-                            <div class="al_page_content_info">
-                                {{ wordcount(page.content) }} words
-                            </div>
-                        {% endif %}
+  
+  <!-- jquery -->
+	
+<script src="/plugin/jquery/jquery.min.js"></script>
 
-                        {% if min2read %}
-                            <div class="al_page_content_info">
-                                {{ min2read(page.content) }} minutes read
-                            </div>
-                        {% endif %}
-                        <span class="tags"></span>
-                    </div>
-                </header>
 
-                {% if toc(page.content) %}
-                    <div class="al_page_content_outline">
-                        {{ toc(page.content,{list_number:false}) }}
-                    </div>
-                {% endif %}
+<script>
+    const CONFIG_BGIMAGE = {
+      mode: 'normal',
+      normalSrc: '/img/header-bg.jpg',
+      randomYouMax: 110,
+      randomYouSrc: 'https://sariay.github.io/Random-img/',
+	  randomOtherSrc: 'https://api.berryapi.net/?service=App.Bing.Images&day=-0',
+	  preloaderEnable: true
+    }
+	
+    const CONFIG_LEACLOUD_COUNT = {
+      enable: false,
+	  appId: 'AU8...',
+	  appKey: '4cU...',
+	  serverURLs: 'http' || ' '
+    }
+  </script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+	<body>
+		<!-- Preloader -->
 
-                {# Page Content #}
-                <section id="post-body">
-                    {{ page.content }}
-                </section>
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
 
-                {# Comment Plugins #}
-                {% include "./includes/plugins/gitalk.swig" %}
-                {% include "./includes/plugins/disqus.swig" %}
-            </article>
 
-            {# Navigate Element #}
-            <nav class="dis_flex al_post_nav">
-                <a class="al_post_nav_item dis_flex_acenter" href="{{ url_for(page.prev.path) }}">
-                    {% if page.prev %}
-                        <svg class="al_arrow">
-                            <use xmlns="http://www.w3.org/2000/svg" xlink:href="/assets/svg_icons.svg#svg-arrow-left"></use>
-                        </svg>
-                        <span class="al_text_ellipsis al_post_nav_desc">{{ page.prev.title }}</span>
-                    {% endif %}
-                </a>
-                <a class="al_post_nav_item dis_flex_acenter" href="{{ url_for(page.next.path) }}">
-                    {% if page.next %}
-                        <span class="al_text_ellipsis al_post_nav_desc">{{ page.next.title }}</span>
-                        <svg class="al_arrow">
-                            <use xmlns="http://www.w3.org/2000/svg" xlink:href="/assets/svg_icons.svg#svg-arrow-right"></use>
-                        </svg>
-                    {% endif %}
-                </a>
-            </nav>
-        </div>
-    </div>
+<!-- header -->
+<header class="fixbackground bg-pan-br">
+	<div class="mask">
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<div class="motto text-shadow-pop-left">
+					<p class="content" id="motto-content">Fetching...</p>
+					<p>-<p>
+					<p class="author" id="motto-author">Just a minute...</p>
+				</div>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more" class="scroll-down">
+				<span class="icon-anchor1 animation-scroll-down"></span>
+			</a>
+		</div>
+	</div>
+</header>
 
-{% endblock %}
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><span>0.0%</span></div>
+
+	<div class="toc-switch"><span class="switch-button">Catalog</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			「vector」
+		
+	</p>
+
+	
+	
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<span class="logo"> 
+			<img src="/img/logo.png">
+		</span>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	
+	<div class="nav-body">
+		<ul id="global-nav">
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home" target="_blank">Home</a>
+		</li>
+		
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive" target="_blank">Archive</a>
+		</li>
+		
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories" target="_blank">Category</a>
+		</li>
+		
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags" target="_blank">Tag</a>
+		</li>
+		
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about" target="_blank">About</a>
+		</li>
+		
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery" target="_blank">Gallery</a>
+		</li>
+		
+	
+
+	
+</ul>
+	</div>
+	
+	<div class="nav-footer">
+		<ul id="global-social">
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-one"><span class="path1"></span><span class="path2"></span></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-zhihu"></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-github"></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-sina-weibo "></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-pinterest2"></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-instagram"></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="http://github.com/" target="_blank">
+				<span class="icon-twitter"></span>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<span class="icon-rss"></span>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="Catalog"></div>
+			</div>
+		</div>
+
+		
+<script src="/plugin/toc/katelog.min.js"></script>
+
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+		<div class="article-title">
+			
+	<a href="/2021/09/29/vector/" itemprop="url">
+		vector
+	</a>
+
+		</div>
+
+		<div class="article-meta">
+			<span>
+				<i class="icon-calendar1"></i>
+				
+				
+
+
+
+
+	Updated on
+
+	<a href="/2021/09/29/vector/" itemprop="url">
+		<time datetime="2021-09-29T15:34:12.000Z" itemprop="dateUpdated">
+	  		2021-09-29
+	  </time>
+	</a> 
+
+
+
+			</span>
+			<span>
+						
+			</span>
+			
+			
+
+
+
+		</div>
+
+		<div class="article-content" id="article-content">
+			<h1 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.vector是向量类型，可以容纳许多类型的数据，因此也被称为容器</span></span><br><span class="line"><span class="comment">// (可以理解为动态数组，是封装好了的类）</span></span><br><span class="line"><span class="comment">// 进行vector操作前应添加头文件#include &lt;vector&gt;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//2.vector的初始化</span></span><br><span class="line">	<span class="comment">// 定义具有10个整型元素的向量（尖括号为元素类型名，它可以是任何合法的数据类型），不具有初值，其值不确定</span></span><br><span class="line">	<span class="comment">// vector&lt;int&gt;a(10);</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 定义具有10个整型元素的向量，且给出的每个元素初值为1</span></span><br><span class="line">	<span class="comment">// vector&lt;int&gt;a(10, 1);</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2.1与另一个向量b的关联用法，先定义向量b</span></span><br><span class="line">	<span class="comment">//vector&lt;int&gt;b(10, 1);</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用向量b给向量a赋值，a的值完全等价于b的值,在此之前要先定义向量b</span></span><br><span class="line">	<span class="comment">/*vector&lt;int&gt;a(b);      */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 将向量b中从0-2（共三个）的元素赋值给a，a的类型为int型</span></span><br><span class="line">	<span class="comment">//	vector&lt;int&gt;a(b.begin(), b.begin() + 3);</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2.2从数组中获得初值</span></span><br><span class="line">	<span class="comment">/*int arr[7] = &#123; 1,2,3,4,5,6,7 &#125;;</span></span><br><span class="line"><span class="comment">	vector&lt;int&gt;a(arr, arr + 7);*/</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//3. vector对象的常用内置函数使用</span></span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;a, b;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//b为向量，将b中的0-2个元素赋值给向量a</span></span><br><span class="line">	a.<span class="built_in">assign</span>(b.<span class="built_in">begin</span>(), b.<span class="built_in">begin</span>() + <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//a中含有4个值为2的元素</span></span><br><span class="line">	a.<span class="built_in">assign</span>(<span class="number">4</span>, <span class="number">2</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//返回a中最后一个元素</span></span><br><span class="line">	a.<span class="built_in">back</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//返回a中第一个元素</span></span><br><span class="line">	a.<span class="built_in">front</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//返回a中第i个元素，当且仅当i（a）存在       假设返回第二个</span></span><br><span class="line">	a[<span class="number">1</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//清空a中的元素</span></span><br><span class="line">	a.<span class="built_in">clear</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//判断a是否为空，是则返回true，否则返回false</span></span><br><span class="line">	a.<span class="built_in">empty</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//删除a中最后一个元素</span></span><br><span class="line">	a.<span class="built_in">pop_back</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//删除a中第一个（从第0个算起）到第二个元素，也就是说删除的元素从a.begin()+1算起（包括它）一直到a.begin()+3（不包括它）结束</span></span><br><span class="line">	a.<span class="built_in">erase</span>(a.<span class="built_in">begin</span>() + <span class="number">1</span>, a.<span class="built_in">begin</span>() + <span class="number">3</span>);</span><br><span class="line">	<span class="comment">//再a的最后一个向量中插入一个元素，值为5</span></span><br><span class="line">	a.<span class="built_in">push_back</span>(<span class="number">5</span>);</span><br><span class="line">	<span class="comment">//再a的第一个元素（从第0个算起）位置插入一个5</span></span><br><span class="line">	a.<span class="built_in">insert</span>(a.<span class="built_in">begin</span>() + <span class="number">1</span>, <span class="number">5</span>);</span><br><span class="line">	<span class="comment">//再a的第一个元素（从第0个算起）位置插入3个数，值都为5</span></span><br><span class="line">	a.<span class="built_in">insert</span>(a.<span class="built_in">begin</span>() + <span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line">	<span class="comment">//c为数组，在a的第一个元素（从第0个元素算起）的位置插入c的第三个元素到第5个元素（不包括c+6）</span></span><br><span class="line">	<span class="keyword">int</span> c[<span class="number">9</span>] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>, &#125;;</span><br><span class="line">	a.<span class="built_in">insert</span>(a.<span class="built_in">begin</span>() + <span class="number">1</span>, c+<span class="number">3</span>, c+<span class="number">6</span>);</span><br><span class="line">	<span class="comment">//返回a中元素的个数</span></span><br><span class="line">	a.<span class="built_in">size</span>();</span><br><span class="line">	<span class="comment">//返回a中总共可以容纳的元素个数</span></span><br><span class="line">	a.<span class="built_in">capacity</span>();</span><br><span class="line">	<span class="comment">//将a中的元素调整为10个，少则补，多则删，其值随机</span></span><br><span class="line">	a.<span class="built_in">resize</span>(<span class="number">10</span>);</span><br><span class="line">	<span class="comment">//将a的现有元素个数调整至10个，多则删，少则补，其值为2</span></span><br><span class="line">	a.<span class="built_in">resize</span>(<span class="number">10</span>, <span class="number">2</span>);</span><br><span class="line">	<span class="comment">//将a的容量扩充为100</span></span><br><span class="line">	a.<span class="built_in">reserve</span>(<span class="number">100</span>);</span><br><span class="line">	<span class="comment">//b为向量，将a与b中元素整体呼唤</span></span><br><span class="line">	a.<span class="built_in">swap</span>(b);</span><br><span class="line">	<span class="comment">////b为向量，向量的比较操作还有 != &gt;= &gt; &lt;= &lt;</span></span><br><span class="line">	a == b;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//4顺序访问vector的几种方式，</span></span><br><span class="line">	<span class="comment">//向向量d中添加元素</span></span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;d;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;<span class="number">10</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		d.<span class="built_in">push_back</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//从数组中选择元素向向量中添加</span></span><br><span class="line">	<span class="keyword">int</span> e[<span class="number">7</span>] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>, &#125;;</span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;d1;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		d1.<span class="built_in">push_back</span>(e[i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//(存疑）</span></span><br><span class="line">	<span class="comment">//从现有向量中选择元素向向量中添加</span></span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;d2;</span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;<span class="built_in">d3</span>(e, e + <span class="number">4</span>);</span><br><span class="line">	<span class="keyword">for</span> (vector&lt;<span class="keyword">int</span>&gt;::iterator it = d3.<span class="built_in">begin</span>(); it &lt; d3.<span class="built_in">end</span>(); ++it)</span><br><span class="line">	&#123;</span><br><span class="line">		b.<span class="built_in">push_back</span>(*it);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">////从文件中读取元素向向量中添加</span></span><br><span class="line">	<span class="comment">//ifstream in(&quot;data.txt&quot;);</span></span><br><span class="line">	<span class="comment">//vector&lt;int&gt;a;</span></span><br><span class="line">	<span class="comment">//for (int i; in &gt;&gt; i) &#123; a.push_back(i); &#125;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//常见错误赋值方式</span></span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt;a;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) </span><br><span class="line">	&#123;	</span><br><span class="line">		a[i] = i; </span><br><span class="line">	&#125;<span class="comment">//下标只能用来获取已经存在的元素</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过迭代器方式读取</span></span><br><span class="line">	<span class="comment">/*int a[6] = &#123; 1,2,3,4,5,6 &#125;;</span></span><br><span class="line"><span class="comment">	vector&lt;int&gt;b(a, a + 4);</span></span><br><span class="line"><span class="comment">	for (vector&lt;int&gt;::iterator it = b.begin(); it != b.end(); it++) </span></span><br><span class="line"><span class="comment">	&#123; </span></span><br><span class="line"><span class="comment">		cout &lt;&lt; *it &lt;&lt; &quot;  &quot;;</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//#include&lt;algorithm&gt;</span></span><br><span class="line"><span class="comment">//	//对a中的从a.begin()（包括它）到a.end()（不包括它）的元素进行从小到大排列</span></span><br><span class="line"><span class="comment">//	sort(a.begin(), a.end());</span></span><br><span class="line"><span class="comment">//	//对a中的从a.begin()（包括它）到a.end()（不包括它）的元素倒置，但不排列，如a中元素为1,3,2,4,倒置后为4,2,3,1</span></span><br><span class="line"><span class="comment">//	reverse(a.begin(), a.end());</span></span><br><span class="line"><span class="comment">//	//把a中的从a.begin()（包括它）到a.end()（不包括它）的元素复制到b中，从b.begin()+1的位置（包括它）开始复制，覆盖掉原有元素</span></span><br><span class="line"><span class="comment">//	copy(a.begin(), a.end(), b.begin() + 1);</span></span><br><span class="line"><span class="comment">//	//在a中的从a.begin()（包括它）到a.end()（不包括它）的元素中查找10，若存在返回其在向量中的位置</span></span><br><span class="line"><span class="comment">//	find(a.begin(), a.end(), 10);</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+	
+		</div>
+		
+		<div id="current-post-cover" data-scr="/img/cart_cover.jpg"></div>
+
+		<!-- relate post, comment...-->
+		<div class="investment-container">
+			<div class="investment-header">
+				<div class="investment-title-1">
+					<div class="on">Related post</div>
+					<div>Comment</div>
+					<div>Share</div>
+				</div>
+				<div class="investment-title-2">	            
+					
+	<span>
+		<a id="totop-post-page">To Top</a>
+		
+			<a href="/2021/10/04/aboutBound/" title="aboutBound" rel="prev">
+				&laquo;Pre post
+			</a>
+		
+		
+			<a href="/2021/09/29/%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BAc/" title="格式化输入输出c" rel="next">
+				Next post&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+				</div>	
+			</div>
+			
+			<div class="investment-content">
+				<div class="investment-content-list">
+					
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/17/KMP/" title="KMP">
+								KMP			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 17日, 2021				
+							</p>
+							<p class="relate-post-content">
+								KMP初步此处把字符串的长度储存在第一个位置中。
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/17/KMP/" title="KMP">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="KMP"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/17/POJ/" title="POJ">
+								POJ			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 17日, 2021				
+							</p>
+							<p class="relate-post-content">
+								最小子序和Subsequence
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950#include ...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/17/POJ/" title="POJ">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="POJ"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/13/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 13日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using ...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/13/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/13/gcd/" title="gcd?">
+								gcd?			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 13日, 2021				
+							</p>
+							<p class="relate-post-content">
+								gcd函数123456789101112131415161718192021222324252627282930313233343536#include &lt;iostream&gt;#include &lt;stdio.h&gt;...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/13/gcd/" title="gcd?">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="gcd?"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/07/readAndWrite/" title="readAndWrite">
+								readAndWrite			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 7日, 2021				
+							</p>
+							<p class="relate-post-content">
+								不怎么快的快读123456789101112inline int read()&#123;    int X=0,w=0; char ch=0;    while(!isdigit(ch)) &#123;        w|=ch==...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/07/readAndWrite/" title="readAndWrite">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="readAndWrite"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/06/%E5%90%8C%E4%BD%99%E5%AE%9A%E7%90%86/" title="同余定理">
+								同余定理			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 6日, 2021				
+							</p>
+							<p class="relate-post-content">
+								同余定理给定一个正整数m，如果两个整数a和b满足（a-b）能够被m整除，即（a-b）/m得到一个整数，那么就称整数a与b对模m同余，记作a≡b(mod m)。
+同余符号两个整数a、b，若它们除以整数m所得的余数相等，则称a与b对模m同...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/06/%E5%90%8C%E4%BD%99%E5%AE%9A%E7%90%86/" title="同余定理">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="同余定理"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/01/binaryTree/" title="二叉树">
+								二叉树			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								二叉树二叉树的存储结构双亲表示法12345678910//双亲表示法struct PTnode &#123; 	int data;	int parent;&#125;; struct PTtree &#123;	struct PTno...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/01/binaryTree/" title="二叉树">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="二叉树"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/01/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">
+								位运算			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								NOT12! 1 = 0;! 0 = 1;
+
+invert
+AND12341 &amp; 1 = 1;1 &amp; 0 = 0;0 &amp; 1 = 0;1 &amp; 0 = 0;
+
+If the two numbers are...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/01/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="位运算"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/01/%E9%AB%98%E7%B2%BE%E5%BA%A6-1/" title="高精度">
+								高精度			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								高精度加法与乘法1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/01/%E9%AB%98%E7%B2%BE%E5%BA%A6-1/" title="高精度">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="高精度"/>
+							</a>
+						</div>
+					</li>												
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/10/23/Searching/" title="Searching">
+								Searching			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十月 23日, 2021				
+							</p>
+							<p class="relate-post-content">
+								1.binarySearch123456789101112131415161718192021222324#include &lt;stdlib.h&gt;#include &lt;stdio.h&gt;int binarySearc...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/10/23/Searching/" title="Searching">				
+								
+								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Searching"/>
+							</a>
+						</div>
+					</li>												
+			
+		</ul>
+	
+</div>	
+				</div>
+				<div class="investment-content-list">
+					<div class="layout-comment">
+
+	
+		<div class="config-info">
+			Please check the parameter of <b>comment</b> in config.yml of hexo-theme-Annie!
+		</div>	
+	
+
+</div>
+				</div>
+				<div class="investment-content-list">
+					<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+
+<!-- show math formula -->
+
+
+
+	 
+	
+<script src="/plugin/clipboard/clipboard.js"></script>
+
+	<script>
+		// Copy code !
+	    function preprocessing() {
+	        $("#article-content .highlight").each(function() {
+	            $(this).wrap('<div id="post-code"></div>');
+	        })
+
+	        $("#article-content #post-code").each(function() {
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            let languageClass = $(this).next().attr('class'),
+	                language = ((languageClass.length > 9) && (languageClass != null)) ? languageClass.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+	            $(this).append('<span class="copy-btn icon-paste"></span>');
+	        });
+	    }
+
+		function copy() {
+		    $('#article-content #post-code').each(function(i) {
+		        let codeCopyId = 'codeCopy-' + i;
+
+		        let codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+   
+			let clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn icon-clipboard1');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn icon-paste');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');   
+			});
+			
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		}
+		
+		(function copyCode(){
+			if ($('.layout-post').length) {
+			    preprocessing();
+			    copy();
+			} 
+		})();
+	</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+
+
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+
+<script type="text/javascript">
+	(function gallerySet(){
+		let titleID = $('.article-title a'),
+			imageID = $('.article-content img'),
+			videoID = $('.article-content video');
+		
+		let postTitle = titleID.text() ? titleID.text() : "No post title!";
+		
+		imageID.each(function() {
+			let imgPath = $(this).attr('src'),
+				imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+		
+			//给每个匹配的<img>元素打包, 即添加父元素<a>
+			$(this).wrap('<a data-fancybox="gallery" data-caption="《 ' + postTitle + ' 》' + imgTitle + '"href="' + imgPath + '"> </a>');
+		});
+		
+		videoID.each(function() {
+			let videoPath = $(this).attr('src');
+		
+			//给每个匹配的<img>元素打包, 即添加父元素<a>
+			$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+		});
+		
+		//TODO：支持html5 video
+
+		if($('#layout-post').length) {
+			$('[data-fancybox="gallery"]').fancybox({
+				loop: true,
+				buttons: [
+					"zoom",
+					"share",
+					"slideShow",
+					"fullScreen",
+					//"download",
+					"thumbs",
+					"close"
+				],
+				protect: true
+			});
+		}
+	})();
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div id="navigation-show">
+		<ul id="global-nav">
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home" target="_blank">Home</a>
+		</li>
+		
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive" target="_blank">Archive</a>
+		</li>
+		
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories" target="_blank">Category</a>
+		</li>
+		
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags" target="_blank">Tag</a>
+		</li>
+		
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about" target="_blank">About</a>
+		</li>
+		
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery" target="_blank">Gallery</a>
+		</li>
+		
+	
+
+	
+</ul>
+	</div>
+
+	<div class="copyright">
+		<p>
+			 
+				&copy;2017 - 2021, content by Sariay. All Rights Reserved.
+			
+			
+				<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			
+		</p>
+		<p>
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+
+
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>		
+</footer>
+		
+	<!-- Local or hitokoto! -->
+
+	
+<script src="/plugin/motto/motto.js"></script>
+
+	
+	<script type="text/javascript">
+		(function motto(){
+			let mottoText = getMingYanContent().split('</br> - </br>'),
+			
+			mottoTextContent = mottoText[0]?mottoText[0]:'请刷新...',
+			
+			mottoTextFrom = mottoText[1]?mottoText[1]:'one/一个';
+			
+			mottoTextContent = mottoTextContent.trim().substring(0, 100);
+		
+			$("#motto-content").html( mottoTextContent);
+			$("#motto-author").html( mottoTextFrom  );
+		})();	
+	</script>	
+
+
+
+<!-- love effect -->
+
+
+<!-- back to top -->
+
+	<div id="totop">
+	<span class="icon-circle-up"></span>
+</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+	
+	
+	
+	
+ 
+
+<!-- leancloud -->
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+	
+
+  
+
+
+
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imagelazyloader/yall.min.js"></script>
+<script src="/plugin/imageloaded/imagesloaded.pkgd.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/plugin/resizediv/resizediv.js"></script>
+<script src="/js/main.js"></script>
+
+	</body>	
+</html>
