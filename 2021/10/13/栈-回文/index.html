@@ -1,285 +1,243 @@
-<!--
-	作者：Sariay
-	时间：2018-08-26
-	描述：There may be a bug, but don't worry, Qiling(器灵) says that it can work normally! aha!
--->
 <!DOCTYPE html>
-<html class="html-loading">
-		
-
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-  <title>
-    
-      栈-回文 | YoungJayz
-    
-  </title>
-  <meta name="author" content="jiajieZeng">
-  <meta name="keywords" content="" />
-  <meta name="description" content="Keep著一顆上進的心" />
-	<!-- favicon -->
-  <link rel="shortcut icon" href="/img/favicon.ico">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
 
-  <!-- css -->
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1.判断回文数的方法下面对自己常用的两种进行呈现。 1.利用循环12345678910bool func(int a) &amp;#123;	int num &#x3D; 0;	int rec &#x3D; a;			&#x2F;&#x2F;因为后面a的值会改变，所以要先用一个值来接收最初的a值，作为判断依据	while (a !&#x3D; 0) &amp;#123;		num &#x3D; num * 10 + a % 10;	&#x2F;&#x2F;a % 10 得到 a的个位数，nu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈-回文">
+<meta property="og:url" content="http://example.com/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/index.html">
+<meta property="og:site_name" content="YoungJayz">
+<meta property="og:description" content="1.判断回文数的方法下面对自己常用的两种进行呈现。 1.利用循环12345678910bool func(int a) &amp;#123;	int num &#x3D; 0;	int rec &#x3D; a;			&#x2F;&#x2F;因为后面a的值会改变，所以要先用一个值来接收最初的a值，作为判断依据	while (a !&#x3D; 0) &amp;#123;		num &#x3D; num * 10 + a % 10;	&#x2F;&#x2F;a % 10 得到 a的个位数，nu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-13T15:08:30.000Z">
+<meta property="article:modified_time" content="2021-10-31T09:10:17.168Z">
+<meta property="article:author" content="jiajieZeng">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/","path":"2021/10/13/栈-回文/","title":"栈-回文"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>栈-回文 | YoungJayz</title>
   
-<link rel="stylesheet" href="/css/Annie.css">
-
-  
-  <!-- jquery -->
-	
-<script src="/plugin/jquery/jquery.min.js"></script>
 
 
-<script>
-    const CONFIG_BGIMAGE = {
-      mode: 'normal',
-      normalSrc: '/img/header-bg.jpg',
-      randomYouMax: 110,
-      randomYouSrc: 'https://sariay.github.io/Random-img/',
-	  randomOtherSrc: 'https://api.berryapi.net/?service=App.Bing.Images&day=-0',
-	  preloaderEnable: true
-    }
-	
-    const CONFIG_LEACLOUD_COUNT = {
-      enable: false,
-	  appId: 'AU8...',
-	  appKey: '4cU...',
-	  serverURLs: 'http' || ' '
-    }
-  </script>
-<meta name="generator" content="Hexo 5.4.0"></head>
-	<body>
-		<!-- Preloader -->
-
-	<div id="preloader">
-		<div class="pre-container">
-			
-				<div class="spinner">
-					<div class="double-bounce1"></div>
-					<div class="double-bounce2"></div>
-				</div>
-						
-		</div>
-	</div>
 
 
-<!-- header -->
-<header class="fixbackground bg-pan-br">
-	<div class="mask">
-		<!-- motto -->
-		<div class="h-body">	
-			
-				<div class="motto text-shadow-pop-left">
-					<p class="content" id="motto-content">Fetching...</p>
-					<p>-<p>
-					<p class="author" id="motto-author">Just a minute...</p>
-				</div>
-			
-		</div>
-		
-		<!-- others: such as time... -->			
-		<div class="h-footer">
-			<a href="javascript:;" id="read-more" class="scroll-down">
-				<span class="icon-anchor1 animation-scroll-down"></span>
-			</a>
-		</div>
-	</div>
-</header>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
 
-<div id="navigation-hide">
-	<!-- Progress bar -->
-	<div id="progress-bar"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-	<!-- Progress percent -->
-	<div id="progress-percentage"><span>0.0%</span></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
 
-	<div class="toc-switch"><span class="switch-button">Catalog</span></div>
+  <div class="site-meta">
 
-	<!-- Page title -->
-	<p>
-		
-			「栈-回文」
-		
-	</p>
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">YoungJayz</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Keep著一顆上進的心</p>
+  </div>
 
-	
-	
-
-	<!-- Nav trigger for navigation-H-->
-	<a class="nav-trigger"><span></span></a>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
 </div>
 
-<!-- Navigation in div(id="navigation-H") -->
-<nav class="nav-container" id="cd-nav">
-	<div class="nav-header">
-		<span class="logo"> 
-			<img src="/img/logo.png">
-		</span>
-		<a href="javascript:;" class="nav-close"></a>
-	</div>
-	
-	<div class="nav-body">
-		<ul id="global-nav">
-	
-		<li class="menu-home">
-			<a href="/" class="menu-item-home" target="_blank">Home</a>
-		</li>
-		
-	
-		<li class="menu-archive">
-			<a href="/archives" class="menu-item-archive" target="_blank">Archive</a>
-		</li>
-		
-	
-		<li class="menu-categories">
-			<a href="/categories" class="menu-item-categories" target="_blank">Category</a>
-		</li>
-		
-	
-		<li class="menu-tags">
-			<a href="/tags" class="menu-item-tags" target="_blank">Tag</a>
-		</li>
-		
-	
-		<li class="menu-about">
-			<a href="/about" class="menu-item-about" target="_blank">About</a>
-		</li>
-		
-	
-		<li class="menu-gallery">
-			<a href="/gallery" class="menu-item-gallery" target="_blank">Gallery</a>
-		</li>
-		
-	
 
-	
-</ul>
-	</div>
-	
-	<div class="nav-footer">
-		<ul id="global-social">
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-one"><span class="path1"></span><span class="path2"></span></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-zhihu"></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-github"></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-sina-weibo "></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-pinterest2"></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-instagram"></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="http://github.com/" target="_blank">
-				<span class="icon-twitter"></span>
-			</a>
-		</li>
-	
-		<li>
-			<a href="/atom.xml" target="_blank">
-				<span class="icon-rss"></span>
-			</a>
-		</li>
-			
-</ul>
 
-	</div>
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
 </nav>
-			
-		<!--main-->
-		<main>
-			<!--
-	时间：2018-11-17
-	描述：
-		插件名称：katelog.min.js
-		插件作者：KELEN
-		插件来源: https://github.com/KELEN/katelog
--->
-
-	
-		<div class="layout-toc">
-			<div id="layout-toc">
-				<div class="k-catelog-list" id="catelog-list" data-title="Catalog"></div>
-			</div>
-		</div>
-
-		
-<script src="/plugin/toc/katelog.min.js"></script>
-
-
-		
-	 
-
-<div class="layout-post">
-	<div id="layout-post">
-		<div class="article-title">
-			
-	<a href="/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/" itemprop="url">
-		栈-回文
-	</a>
-
-		</div>
-
-		<div class="article-meta">
-			<span>
-				<i class="icon-calendar1"></i>
-				
-				
 
 
 
 
-	Updated on
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
 
-	<a href="/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/" itemprop="url">
-		<time datetime="2021-10-13T15:08:30.000Z" itemprop="dateUpdated">
-	  		2021-10-31
-	  </time>
-	</a> 
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E6%95%B0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1.判断回文数的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%A9%E7%94%A8%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.1.</span> <span class="nav-text">1.利用循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8%E6%95%B0%E7%BB%84"><span class="nav-number">1.2.</span> <span class="nav-text">2.利用数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.创建数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%89%BE%E5%88%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E4%B8%AD%E9%97%B4%E7%82%B9"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.找到字符串的中间点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%A5%E6%A0%88"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.入栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6%E6%9C%89%E5%A5%87%E5%81%B6%E4%B9%8B%E5%88%86"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.字符串长度有奇偶之分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%BC%80%E5%A7%8B%E5%8C%B9%E9%85%8D"><span class="nav-number">1.2.5.</span> <span class="nav-text">5.开始匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BB%84%E5%90%88%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.6.</span> <span class="nav-text">1.组合的应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stackLinkedList"><span class="nav-number">1.3.</span> <span class="nav-text">stackLinkedList</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jiajieZeng"
+      src="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+  <p class="site-author-name" itemprop="name">jiajieZeng</p>
+  <div class="site-description" itemprop="description">From SCNU Guangdong China</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiajieZeng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiajieZeng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1105489738@qq.com" title="E-Mail → mailto:1105489738@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
-			</span>
-			<span>
-						
-			</span>
-			
-			
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
 
 
+    </header>
 
-		</div>
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
-		<div class="article-content" id="article-content">
-			<h1 id="1-判断回文数的方法"><a href="#1-判断回文数的方法" class="headerlink" title="1.判断回文数的方法"></a>1.判断回文数的方法</h1><p>下面对自己常用的两种进行呈现。</p>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/13/%E6%A0%88-%E5%9B%9E%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+      <meta itemprop="name" content="jiajieZeng">
+      <meta itemprop="description" content="From SCNU Guangdong China">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YoungJayz">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          栈-回文
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-13 23:08:30" itemprop="dateCreated datePublished" datetime="2021-10-13T23:08:30+08:00">2021-10-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-31 17:10:17" itemprop="dateModified" datetime="2021-10-31T17:10:17+08:00">2021-10-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-判断回文数的方法"><a href="#1-判断回文数的方法" class="headerlink" title="1.判断回文数的方法"></a>1.判断回文数的方法</h1><p>下面对自己常用的两种进行呈现。</p>
 <h2 id="1-利用循环"><a href="#1-利用循环" class="headerlink" title="1.利用循环"></a>1.利用循环</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> rec = a;			<span class="comment">//因为后面a的值会改变，所以要先用一个值来接收最初的a值，作为判断依据</span></span><br><span class="line">	<span class="keyword">while</span> (a != <span class="number">0</span>) &#123;</span><br><span class="line">		num = num * <span class="number">10</span> + a % <span class="number">10</span>;	<span class="comment">//a % 10 得到 a的个位数，num * 10 + a % 10就让当时a的个位进入到num的后面</span></span><br><span class="line">		a /= <span class="number">10</span>;					<span class="comment">//末位数已经传入num中， a /= 10 帮助获取前一位</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (num != rec) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -301,589 +259,74 @@
 
 <h2 id="stackLinkedList"><a href="#stackLinkedList" class="headerlink" title="stackLinkedList"></a>stackLinkedList</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stack</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">top</span>;</span></span><br><span class="line">	<span class="keyword">int</span> size; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">stack* <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">stack</span> *<span class="title">S</span>;</span></span><br><span class="line">	S = (struct stack*)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct stack));</span><br><span class="line">	S-&gt;size = <span class="number">0</span>;</span><br><span class="line">	S-&gt;top = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isEmpty</span><span class="params">(stack *S)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(S-&gt;size == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">stack* <span class="title">push</span><span class="params">(stack* S, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(S == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">t</span>;</span></span><br><span class="line">	t = (struct node*)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct node));</span><br><span class="line">	t-&gt;data = val;</span><br><span class="line">	t-&gt;next = S-&gt;top;</span><br><span class="line">	S-&gt;top = t;</span><br><span class="line">	S-&gt;size++;</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">(stack* S)</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">t</span>;</span></span><br><span class="line">	t = S-&gt;top;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">isEmpty</span>(S)==<span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		S-&gt;top = S-&gt;top-&gt;next;</span><br><span class="line">		<span class="built_in">free</span>(t);</span><br><span class="line">		S-&gt;size--;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">traval</span><span class="params">(stack* S)</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">t</span>;</span></span><br><span class="line">	t = S-&gt;top;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">isEmpty</span>(S)==<span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(t != <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,t-&gt;data);</span><br><span class="line">		t=t-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">visit</span><span class="params">(stack*S)</span> </span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">t</span>;</span></span><br><span class="line">	t = S-&gt;top;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,t-&gt;data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">(stack *S)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> S-&gt;size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">stack</span> *<span class="title">S</span> =</span> <span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">push</span>(S,i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="built_in">size</span>(S));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">visit</span>(S);</span><br><span class="line">		<span class="built_in">pop</span>(S);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n%d&quot;</span>,<span class="built_in">size</span>(S));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-	
-		</div>
-		
-		<div id="current-post-cover" data-scr="/img/cart_cover.jpg"></div>
 
-		<!-- relate post, comment...-->
-		<div class="investment-container">
-			<div class="investment-header">
-				<div class="investment-title-1">
-					<div class="on">Related post</div>
-					<div>Comment</div>
-					<div>Share</div>
-				</div>
-				<div class="investment-title-2">	            
-					
-	<span>
-		<a id="totop-post-page">To Top</a>
-		
-			<a href="/2021/10/23/Searching/" title="Searching" rel="prev">
-				&laquo;Pre post
-			</a>
-		
-		
-			<a href="/2021/10/13/LinkList/" title="LinkedList" rel="next">
-				Next post&raquo;
-			</a>
-			
-	</span>
+    </div>
 
+    
+    
+    
 
-      		
-				</div>	
-			</div>
-			
-			<div class="investment-content">
-				<div class="investment-content-list">
-					
+    <footer class="post-footer">
 
-<div class="relate-post">
-	
-		<ul>
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/11/17/KMP/" title="KMP">
-								KMP			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十一月 17日, 2021				
-							</p>
-							<p class="relate-post-content">
-								KMP初步此处把字符串的长度储存在第一个位置中。
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505...
-							</p>
-						</div>
+        
 
-						<div class="relate-post-cover">
-							<a href="/2021/11/17/KMP/" title="KMP">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="KMP"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/11/17/POJ/" title="POJ">
-								POJ			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十一月 17日, 2021				
-							</p>
-							<p class="relate-post-content">
-								最小子序和Subsequence
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950#include ...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/11/17/POJ/" title="POJ">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="POJ"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/11/01/binaryTree/" title="二叉树">
-								二叉树			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十一月 1日, 2021				
-							</p>
-							<p class="relate-post-content">
-								二叉树二叉树的存储结构双亲表示法12345678910//双亲表示法struct PTnode &#123; 	int data;	int parent;&#125;; struct PTtree &#123;	struct PTno...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/11/01/binaryTree/" title="二叉树">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="二叉树"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/23/Searching/" title="Searching">
-								Searching			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 23日, 2021				
-							</p>
-							<p class="relate-post-content">
-								1.binarySearch123456789101112131415161718192021222324#include &lt;stdlib.h&gt;#include &lt;stdio.h&gt;int binarySearc...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/23/Searching/" title="Searching">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Searching"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/13/LinkList/" title="LinkedList">
-								LinkedList			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								1.单链表简单单链表简单的单链表实现，向里面插入一个数
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/13/LinkList/" title="LinkedList">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="LinkedList"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/13/Sort/" title="Sort">
-								Sort			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								1.Sorting1.bubbleSortO(n^2)
-123456789101112//bubbleSort函数，用指针传入一个数组   int *arrvoid bubbleSort(int* arr, int len) &#12...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/13/Sort/" title="Sort">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Sort"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/13/%E9%98%9F%E5%88%97/" title="队列">
-								队列			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								1.简单的队列1.运用结构体使得数据储存更加便捷12345struct queue &#123;    int data[101];		//储存数据的数组    int head;		//头	    int tail;		//尾&#1...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/13/%E9%98%9F%E5%88%97/" title="队列">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="队列"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/13/%E7%AE%80%E5%8D%95%E6%A1%B6%E6%8E%92%E5%BA%8F/" title="简单桶排序">
-								简单桶排序			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								简单的桶排序一种简单的算法，在初学写代码时，用处还是挺大的
-1.放桶1234//假设数字被限定在0 ~ 9之间，记录每一个数字出现的次数int arr[11],num;//先将桶的每一个数字都定为出现0次memset(arr,0,si...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/13/%E7%AE%80%E5%8D%95%E6%A1%B6%E6%8E%92%E5%BA%8F/" title="简单桶排序">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="简单桶排序"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/10/13/Learning/" title="Learning quickSort">
-								Learning quickSort			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								quickSorthexo 搭建终于全部完工，就以快速排序作为 Real First Post 体验一下吧！
-简单的快排，就是要把数字比基准数小的放到基准数的左边，比基准数大的放到基准数的右边。
-1.函数1234void quickS...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/10/13/Learning/" title="Learning quickSort">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Learning quickSort"/>
-							</a>
-						</div>
-					</li>												
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2021/11/13/hello-world/" title="Hello World">
-								Hello World			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								十一月 13日, 2021				
-							</p>
-							<p class="relate-post-content">
-								Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using ...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2021/11/13/hello-world/" title="Hello World">				
-								
-								<img class="lazy" src="/img/lazy.gif" data-src="/img/cart_cover.jpg" alt="Hello World"/>
-							</a>
-						</div>
-					</li>												
-			
-		</ul>
-	
-</div>	
-				</div>
-				<div class="investment-content-list">
-					<div class="layout-comment">
-
-	
-		<div class="config-info">
-			Please check the parameter of <b>comment</b> in config.yml of hexo-theme-Annie!
-		</div>	
-	
-
-</div>
-				</div>
-				<div class="investment-content-list">
-					<div class="layout-share">
-	
-	
-
-		
-			
-			<!-- socialShare share -->
-			<div class="social-share"></div>
-
-<!--  css & js -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-			
-		
-		
-	
-</div>
-
-
-				</div>
-			</div>	
-		</div>
-	</div>
-</div>
-
-<!-- show math formula -->
-
-
-
-	 
-	
-<script src="/plugin/clipboard/clipboard.js"></script>
-
-	<script>
-		// Copy code !
-	    function preprocessing() {
-	        $("#article-content .highlight").each(function() {
-	            $(this).wrap('<div id="post-code"></div>');
-	        })
-
-	        $("#article-content #post-code").each(function() {
-	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
-	        })
-
-	        $("#article-content .copy-nav").each(function() {
-	            let languageClass = $(this).next().attr('class'),
-	                language = ((languageClass.length > 9) && (languageClass != null)) ? languageClass.substr(10) : "none"; //why 9? Need to check language?
-
-	            $(this).find('.code-language').text(language);
-	            $(this).append('<span class="copy-btn icon-paste"></span>');
-	        });
-	    }
-
-		function copy() {
-		    $('#article-content #post-code').each(function(i) {
-		        let codeCopyId = 'codeCopy-' + i;
-
-		        let codeNode = $(this).find('.code'),
-		            copyButton = $(this).find('.copy-btn');
-
-		        codeNode.attr('id', codeCopyId);
-		        copyButton.attr('data-clipboard-target-id', codeCopyId);
-		    })
-   
-			let clipboard = new ClipboardJS('.copy-btn', {
-					target: function(trigger) {
-						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-					}
-		      	});
-
-			//pure js
-			function showTooltip(elem, msg) {		   
-				elem.setAttribute('aria-label', msg);
-				elem.setAttribute('class', 'copy-btn icon-clipboard1');
-				setTimeout(function() {
-					elem.setAttribute('class', 'copy-btn icon-paste');
-				}, 2000);
-			}
-
-			clipboard.on('success', function(e) {
-			    e.clearSelection();
-			    console.info('Action:', e.action);		   
-			    console.info('Trigger:', e.trigger);
-			    showTooltip(e.trigger, 'Copied!');   
-			});
-			
-			clipboard.on('error', function(e) {
-			    console.error('Action:', e.action);
-			    console.error('Trigger:', e.trigger);
-			});
-		}
-		
-		(function copyCode(){
-			if ($('.layout-post').length) {
-			    preprocessing();
-			    copy();
-			} 
-		})();
-	</script>
-
-
-
-
-
-
-<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
-
-
-<script src="/plugin/fancybox/jquery.fancybox.js"></script>
-
-
-<script type="text/javascript">
-	(function gallerySet(){
-		let titleID = $('.article-title a'),
-			imageID = $('.article-content img'),
-			videoID = $('.article-content video');
-		
-		let postTitle = titleID.text() ? titleID.text() : "No post title!";
-		
-		imageID.each(function() {
-			let imgPath = $(this).attr('src'),
-				imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
-		
-			//给每个匹配的<img>元素打包, 即添加父元素<a>
-			$(this).wrap('<a data-fancybox="gallery" data-caption="《 ' + postTitle + ' 》' + imgTitle + '"href="' + imgPath + '"> </a>');
-		});
-		
-		videoID.each(function() {
-			let videoPath = $(this).attr('src');
-		
-			//给每个匹配的<img>元素打包, 即添加父元素<a>
-			$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
-		});
-		
-		//TODO：支持html5 video
-
-		if($('#layout-post').length) {
-			$('[data-fancybox="gallery"]').fancybox({
-				loop: true,
-				buttons: [
-					"zoom",
-					"share",
-					"slideShow",
-					"fullScreen",
-					//"download",
-					"thumbs",
-					"close"
-				],
-				protect: true
-			});
-		}
-	})();
-</script>
-		</main>
-
-		<!--footer-->
-		<footer>
-	<div id="navigation-show">
-		<ul id="global-nav">
-	
-		<li class="menu-home">
-			<a href="/" class="menu-item-home" target="_blank">Home</a>
-		</li>
-		
-	
-		<li class="menu-archive">
-			<a href="/archives" class="menu-item-archive" target="_blank">Archive</a>
-		</li>
-		
-	
-		<li class="menu-categories">
-			<a href="/categories" class="menu-item-categories" target="_blank">Category</a>
-		</li>
-		
-	
-		<li class="menu-tags">
-			<a href="/tags" class="menu-item-tags" target="_blank">Tag</a>
-		</li>
-		
-	
-		<li class="menu-about">
-			<a href="/about" class="menu-item-about" target="_blank">About</a>
-		</li>
-		
-	
-		<li class="menu-gallery">
-			<a href="/gallery" class="menu-item-gallery" target="_blank">Gallery</a>
-		</li>
-		
-	
-
-	
-</ul>
-	</div>
-
-	<div class="copyright">
-		<p>
-			 
-				&copy;2017 - 2021, content by Sariay. All Rights Reserved.
-			
-			
-				<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
-			
-		</p>
-		<p>
-			
-
-	<!-- busuanzi -->
-	<!-- busuanzi -->
-
-
-
-			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
-			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
-		</p>
-	</div>		
-</footer>
-		
-	<!-- Local or hitokoto! -->
-
-	
-<script src="/plugin/motto/motto.js"></script>
-
-	
-	<script type="text/javascript">
-		(function motto(){
-			let mottoText = getMingYanContent().split('</br> - </br>'),
-			
-			mottoTextContent = mottoText[0]?mottoText[0]:'请刷新...',
-			
-			mottoTextFrom = mottoText[1]?mottoText[1]:'one/一个';
-			
-			mottoTextContent = mottoTextContent.trim().substring(0, 100);
-		
-			$("#motto-content").html( mottoTextContent);
-			$("#motto-author").html( mottoTextFrom  );
-		})();	
-	</script>	
-
-
-
-<!-- love effect -->
-
-
-<!-- back to top -->
-
-	<div id="totop">
-	<span class="icon-circle-up"></span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/13/LinkList/" rel="prev" title="LinkedList">
+                  <i class="fa fa-chevron-left"></i> LinkedList
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/23/Searching/" rel="next" title="Searching">
+                  Searching <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
 </div>
 
 
 
-<!-- site analysis -->
 
 
-	<!-- site-analysis -->
-	
-	
-	
-	
-	
- 
 
-<!-- leancloud -->
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
 
 
-	<!-- leancloud -->
-	<!--
-	时间：2018-11-27
-	描述：
-		文章访问量：visitors
-		文章喜欢量：likes	
-		文章排行榜：topNPost
-		其他得说明：
-			01-Cookie相关的函数 
-				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
-			02-visitors相关的函数 
-				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
-				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
-			03-topNPost相关的函数
-				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
-			04-likes相关的函数，
-				参考了01 & 02进行简单的设计与实现
--->
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajieZeng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
+    </div>
+  </footer>
 
-	
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-<script src="/plugin/chinese/chinese.js"></script>
-<script src="/plugin/imagelazyloader/yall.min.js"></script>
-<script src="/plugin/imageloaded/imagesloaded.pkgd.min.js"></script>
-<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
-<script src="/plugin/resizediv/resizediv.js"></script>
-<script src="/js/main.js"></script>
 
-	</body>	
+
+  
+
+
+
+
+
+</body>
 </html>
