@@ -365,7 +365,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-11 21:21:14" itemprop="dateModified" datetime="2021-11-11T21:21:14+08:00">2021-11-11</time>
+        <time title="Modified: 2021-11-28 20:29:37" itemprop="dateModified" datetime="2021-11-28T20:29:37+08:00">2021-11-28</time>
       </span>
 
   
@@ -378,11 +378,30 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h1><p>if 语句后有大括号, 则大括号里面所有的语句都会在if表达式为真时执行；如果没大括号，则if表达式为真时只会执行<strong>第一条语句.</strong></p>
+          <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>临近期末，为了应付理论考试，在此针对谭浩强的《C++程序设计》做一个总结。这份东西更多的是面向自己，所以肯定会不全。</p>
+<h1 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h1><p>大致是：结构体的<code>.</code>和<code>-&gt;</code>最高级此后分别是(从上往下)</p>
+<ul>
+<li>单目运算符</li>
+<li>乘除求余</li>
+<li>加减</li>
+<li>关系运算符<code>&lt;; &lt;=; &gt;; &gt;=</code></li>
+<li>关系运算符<code>==; !=</code></li>
+<li>逻辑与，或</li>
+<li>条件</li>
+<li>复制</li>
+<li>逗号运算符</li>
+</ul>
+<h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><ul>
+<li><p>数值型常量（常数）</p>
+</li>
+<li><p>字符型常量</p>
+</li>
+</ul>
+<h2 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h2><p>if 语句后有大括号, 则大括号里面所有的语句都会在if表达式为真时执行；如果没大括号，则if表达式为真时只会执行<strong>第一条语句.</strong></p>
 <p><code>while(--i)</code>碰到马上减一然后进入循环</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">7</span>, s = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (--i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (i % <span class="number">3</span> == <span class="number">0</span>)</span><br><span class="line">		s += i;</span><br><span class="line">		s++;</span><br><span class="line">	&#125;</span><br><span class="line">	s++;</span><br><span class="line">	cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// s = 16</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="数的类型"><a href="#数的类型" class="headerlink" title="数的类型"></a>数的类型</h1><p>1、考点：算术运算符（书 P30） 正确选项：D 解析：注意 d 是 double 类型，%（取余）符号不能用于 double 类型，因此不符合语法的是 D 选项</p>
+<h2 id="数的类型"><a href="#数的类型" class="headerlink" title="数的类型"></a>数的类型</h2><p>1、考点：算术运算符（书 P30） 正确选项：D 解析：注意 d 是 double 类型，%（取余）符号不能用于 double 类型，因此不符合语法的是 D 选项</p>
 <p>2、考点：算术运算符（书 P30） 正确选项：C 易错项：D 解析：虽然定义 x 和 y 为 double 类型，但 3 和 2 都是 int 类型，那么在/（除号）两边都是 int 时，结果也是 int，即 3/2=1（不是 1.5），因此 y=1.0+1=2.0</p>
 <p>4、考点：逗号运算符和逗号表达式（P36-37） 正确选项：B 解析：逗号表达式中用逗号分开的表达式分别求值，以最后一个表达式的值作为整个表达式 的值。</p>
 <p>5、考点：运算符优先级（书本附录 B） 正确选项：B 解析：不需要解析吧，查表可得（稍微记一下）</p>
