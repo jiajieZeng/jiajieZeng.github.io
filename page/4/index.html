@@ -365,7 +365,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-28 20:29:37" itemprop="dateModified" datetime="2021-11-28T20:29:37+08:00">2021-11-28</time>
+        <time title="Modified: 2021-11-30 20:02:03" itemprop="dateModified" datetime="2021-11-30T20:02:03+08:00">2021-11-30</time>
       </span>
 
   
@@ -392,11 +392,86 @@
 <li>逗号运算符</li>
 </ul>
 <h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><ul>
-<li><p>数值型常量（常数）</p>
-</li>
-<li><p>字符型常量</p>
-</li>
+<li>数值型常量（常数）</li>
+<li>字符型常量</li>
 </ul>
+<p><img src="D:\复习资料\数据类型.png"></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>类型标识符</th>
+<th>字节数</th>
+<th>数值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整型</td>
+<td>int</td>
+<td>4</td>
+<td>-2147483648~2147483647</td>
+</tr>
+<tr>
+<td>无符号整型</td>
+<td>unsigned int</td>
+<td>4</td>
+<td>0~4294967295</td>
+</tr>
+<tr>
+<td>短整型</td>
+<td>short int</td>
+<td>2</td>
+<td>-32768~32767</td>
+</tr>
+<tr>
+<td>无符号短整型</td>
+<td>unsigned short int</td>
+<td>2</td>
+<td>0~65535</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long int</td>
+<td>4</td>
+<td>-2147483648~2147483647</td>
+</tr>
+<tr>
+<td>无符号长整型</td>
+<td>unsigned long int</td>
+<td>4</td>
+<td>0~4294967295</td>
+</tr>
+<tr>
+<td>字符型</td>
+<td>char</td>
+<td>1</td>
+<td>-128~127</td>
+</tr>
+<tr>
+<td>无符号字符型</td>
+<td>unsigned char</td>
+<td>1</td>
+<td>0~255</td>
+</tr>
+<tr>
+<td>单精度型</td>
+<td>flaot</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>双精度型</td>
+<td>double</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>长双精度型</td>
+<td>long double</td>
+<td>8</td>
+<td></td>
+</tr>
+</tbody></table>
 <h2 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h2><p>if 语句后有大括号, 则大括号里面所有的语句都会在if表达式为真时执行；如果没大括号，则if表达式为真时只会执行<strong>第一条语句.</strong></p>
 <p><code>while(--i)</code>碰到马上减一然后进入循环</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">7</span>, s = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (--i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (i % <span class="number">3</span> == <span class="number">0</span>)</span><br><span class="line">		s += i;</span><br><span class="line">		s++;</span><br><span class="line">	&#125;</span><br><span class="line">	s++;</span><br><span class="line">	cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// s = 16</span></span><br></pre></td></tr></table></figure>
