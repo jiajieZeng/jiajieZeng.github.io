@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -171,6 +171,72 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/04/aboutBound/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+      <meta itemprop="name" content="jiajieZeng">
+      <meta itemprop="description" content="From SCNU Guangdong China">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YoungJayz">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/04/aboutBound/" class="post-title-link" itemprop="url">aboutBound</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-04 18:24:46 / Modified: 18:25:17" itemprop="dateCreated datePublished" datetime="2021-10-04T18:24:46+08:00">2021-10-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="upper-And-lower"><a href="#upper-And-lower" class="headerlink" title="upper And lower"></a>upper And lower</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//找到返回该数字的地址,不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//lower_bound(head,tail,target);</span></span><br><span class="line"><span class="comment">//第一个大于或等于</span></span><br><span class="line"><span class="keyword">int</span> arr[<span class="number">10</span>]=&#123;<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> n = <span class="built_in">lower_bound</span>(arr,arr+<span class="number">10</span>,<span class="number">2</span>)-arr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//upper_bound(head,tail,target);</span></span><br><span class="line"><span class="comment">//第一个大于 int n2 = upper_bound(arr,arr+10,2)-arr;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//以下执行与升序数组</span></span><br><span class="line"><span class="comment">//lower_bound(head,tail,target,less&lt;type&gt;() );</span></span><br><span class="line"><span class="comment">//第一个小于或等于</span></span><br><span class="line"><span class="keyword">int</span> n3 = <span class="built_in">lower_bound</span>(arr,arr+<span class="number">10</span>,<span class="number">2</span>,less&lt;<span class="keyword">int</span>&gt;())-arr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//upper_bound(head,tail,target,less&lt;int&gt;());</span></span><br><span class="line"><span class="comment">//第一个小于 int n4 = upper_bound(arr,arr+10,2,less&lt;int&gt;())-arr;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//以下执行于降序数组 int a[10]=&#123;10,9,8,7,6,5,4,3,2,1&#125;;</span></span><br><span class="line"><span class="comment">//小于等于target</span></span><br><span class="line"><span class="keyword">int</span> n5 = <span class="built_in">lower_bound</span>(a,a+<span class="number">10</span>,<span class="number">2</span>,greater&lt;<span class="keyword">int</span>&gt;())-a;</span><br><span class="line"><span class="comment">//小于target</span></span><br><span class="line"><span class="keyword">int</span> n6 = <span class="built_in">upper_bound</span>(a,a+<span class="number">10</span>,<span class="number">2</span>,greater&lt;<span class="keyword">int</span>&gt;())-a;</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; n &lt;&lt; endl &lt;&lt; n2 &lt;&lt; endl &lt;&lt; n3 &lt;&lt; endl &lt;&lt; n4 &lt;&lt; endl &lt;&lt; n5 &lt;&lt; endl &lt;&lt; n6 &lt;&lt; endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -836,78 +902,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/20/aboutASCII/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
-      <meta itemprop="name" content="jiajieZeng">
-      <meta itemprop="description" content="From SCNU Guangdong China">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YoungJayz">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/20/aboutASCII/" class="post-title-link" itemprop="url">aboutASCII</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-09-20 22:42:24 / Modified: 23:06:55" itemprop="dateCreated datePublished" datetime="2021-09-20T22:42:24+08:00">2021-09-20</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="1-一些关于ASCII的用法"><a href="#1-一些关于ASCII的用法" class="headerlink" title="1.一些关于ASCII的用法"></a>1.一些关于ASCII的用法</h1><h2 id="1-将数字字符转换位数字"><a href="#1-将数字字符转换位数字" class="headerlink" title="1.将数字字符转换位数字"></a>1.将数字字符转换位数字</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此处的ch = &#x27;1&#x27;是一个字符值</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; <span class="string">&quot;\t&quot;</span> &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(ch) &lt;&lt; endl;						<span class="comment">//输出 1  1</span></span><br><span class="line">cout &lt;&lt; ch - <span class="string">&#x27;0&#x27;</span> &lt;&lt; <span class="string">&quot;\t&quot;</span> &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(ch - <span class="string">&#x27;0&#x27;</span>) &lt;&lt; endl;			<span class="comment">//输出 1  4</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-大小写字母转换"><a href="#2-大小写字母转换" class="headerlink" title="2.大小写字母转换"></a>2.大小写字母转换</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A是65，a是97，空格是32</span></span><br><span class="line"><span class="comment">//所以转换为小写就是加一个space，转换为大写就是减去一个space</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; endl;			<span class="comment">//输出A</span></span><br><span class="line"><span class="keyword">char</span> ch2 = ch + <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch2;				<span class="comment">//输出a</span></span><br><span class="line"><span class="keyword">char</span> ch3 = ch - <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch3;				<span class="comment">//输出A</span></span><br><span class="line"><span class="comment">//其实这里是多此一举，不如直接tolower();</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-用大写字母表示编号"><a href="#3-用大写字母表示编号" class="headerlink" title="3.用大写字母表示编号"></a>3.用大写字母表示编号</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A代表1，以此类推</span></span><br><span class="line"><span class="comment">//A是65，@是六十四</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line"><span class="keyword">int</span> cnt = ch - <span class="string">&#x27;@&#x27;</span>;</span><br><span class="line">cout &lt;&lt; cnt;			<span class="comment">//输出 1</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -921,7 +915,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

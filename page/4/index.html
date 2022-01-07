@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -171,6 +171,78 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/20/aboutASCII/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+      <meta itemprop="name" content="jiajieZeng">
+      <meta itemprop="description" content="From SCNU Guangdong China">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YoungJayz">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/20/aboutASCII/" class="post-title-link" itemprop="url">aboutASCII</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-09-20 22:42:24 / Modified: 23:06:55" itemprop="dateCreated datePublished" datetime="2021-09-20T22:42:24+08:00">2021-09-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-一些关于ASCII的用法"><a href="#1-一些关于ASCII的用法" class="headerlink" title="1.一些关于ASCII的用法"></a>1.一些关于ASCII的用法</h1><h2 id="1-将数字字符转换位数字"><a href="#1-将数字字符转换位数字" class="headerlink" title="1.将数字字符转换位数字"></a>1.将数字字符转换位数字</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此处的ch = &#x27;1&#x27;是一个字符值</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; <span class="string">&quot;\t&quot;</span> &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(ch) &lt;&lt; endl;						<span class="comment">//输出 1  1</span></span><br><span class="line">cout &lt;&lt; ch - <span class="string">&#x27;0&#x27;</span> &lt;&lt; <span class="string">&quot;\t&quot;</span> &lt;&lt; <span class="built_in"><span class="keyword">sizeof</span></span>(ch - <span class="string">&#x27;0&#x27;</span>) &lt;&lt; endl;			<span class="comment">//输出 1  4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-大小写字母转换"><a href="#2-大小写字母转换" class="headerlink" title="2.大小写字母转换"></a>2.大小写字母转换</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A是65，a是97，空格是32</span></span><br><span class="line"><span class="comment">//所以转换为小写就是加一个space，转换为大写就是减去一个space</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch &lt;&lt; endl;			<span class="comment">//输出A</span></span><br><span class="line"><span class="keyword">char</span> ch2 = ch + <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch2;				<span class="comment">//输出a</span></span><br><span class="line"><span class="keyword">char</span> ch3 = ch - <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">cout &lt;&lt; ch3;				<span class="comment">//输出A</span></span><br><span class="line"><span class="comment">//其实这里是多此一举，不如直接tolower();</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-用大写字母表示编号"><a href="#3-用大写字母表示编号" class="headerlink" title="3.用大写字母表示编号"></a>3.用大写字母表示编号</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A代表1，以此类推</span></span><br><span class="line"><span class="comment">//A是65，@是六十四</span></span><br><span class="line"><span class="keyword">char</span> ch = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line"><span class="keyword">int</span> cnt = ch - <span class="string">&#x27;@&#x27;</span>;</span><br><span class="line">cout &lt;&lt; cnt;			<span class="comment">//输出 1</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -512,7 +584,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
