@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="d:/复习资料/数据类型.png">
 <meta property="article:published_time" content="2020-11-11T12:45:54.000Z">
-<meta property="article:modified_time" content="2021-11-30T12:02:03.391Z">
+<meta property="article:modified_time" content="2022-01-17T13:14:43.157Z">
 <meta property="article:author" content="jiajieZeng">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="d:/复习资料/数据类型.png">
@@ -119,7 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">第二章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.2.</span> <span class="nav-text">if语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">数的类型</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">第二章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.2.</span> <span class="nav-text">if语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">数的类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E5%85%B3%E4%BA%8E%E6%8C%87%E9%92%88%E7%9A%84%E7%9F%A5%E8%AF%86"><span class="nav-number">4.</span> <span class="nav-text">一点关于指针的知识</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -217,7 +217,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-30 20:02:03" itemprop="dateModified" datetime="2021-11-30T20:02:03+08:00">2021-11-30</time>
+        <time title="Modified: 2022-01-17 21:14:43" itemprop="dateModified" datetime="2022-01-17T21:14:43+08:00">2022-01-17</time>
       </span>
 
   
@@ -333,6 +333,13 @@
 <p>4、考点：逗号运算符和逗号表达式（P36-37） 正确选项：B 解析：逗号表达式中用逗号分开的表达式分别求值，以最后一个表达式的值作为整个表达式 的值。</p>
 <p>5、考点：运算符优先级（书本附录 B） 正确选项：B 解析：不需要解析吧，查表可得（稍微记一下）</p>
 <p>1、考点：转义字符（书 P22-23） 正确答案：5 解析：A \x11（十六进制） T \101（八进制） C 共 5 个字符</p>
+<h1 id="一点关于指针的知识"><a href="#一点关于指针的知识" class="headerlink" title="一点关于指针的知识"></a>一点关于指针的知识</h1><p>在传递给函数时：</p>
+<ul>
+<li><p><strong>不能试图通过改变形参指针变量的值而使实参指针变量的值改变（其实就是不能去改变p1地址）</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>* p1,<span class="keyword">int</span>* p2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span>* temp;</span><br><span class="line">    temp = p1;</span><br><span class="line">    p1 = p2;</span><br><span class="line">    p2 = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>调用函数时不会改变实参指针变量的值，但可以改变实参指针变量所指向变量的值</strong></p>
+</li>
+</ul>
 
     </div>
 
