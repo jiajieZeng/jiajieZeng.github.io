@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -171,6 +171,87 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/string-cpp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+      <meta itemprop="name" content="jiajieZeng">
+      <meta itemprop="description" content="From SCNU Guangdong China">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YoungJayz">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/22/string-cpp/" class="post-title-link" itemprop="url">string.cpp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-09-22 13:29:38 / Modified: 14:17:17" itemprop="dateCreated datePublished" datetime="2021-09-22T13:29:38+08:00">2021-09-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-string-cpp"><a href="#1-string-cpp" class="headerlink" title="1.string.cpp"></a>1.string.cpp</h1><h2 id="1-insert"><a href="#1-insert" class="headerlink" title="1.insert"></a>1.insert</h2><p><code>str.insert(position,str2);</code>  insert str2 into str[positon];</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">string str = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">cout &lt;&lt; str &lt;&lt; endl;		<span class="comment">//Hello World.</span></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">string str2 = <span class="string">&quot;cpp&quot;</span>;</span><br><span class="line">str.<span class="built_in">insert</span>(n,str2);</span><br><span class="line">cout &lt;&lt; str &lt;&lt; endl;		<span class="comment">//cppHello World.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-find"><a href="#2-find" class="headerlink" title="2.find"></a>2.find</h2><p><code>str.find(str2);</code>  find postition</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">string str2 = <span class="string">&quot;World&quot;</span>;</span><br><span class="line">cout &lt;&lt; str.<span class="built_in">find</span>(str2);		<span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-substr"><a href="#3-substr" class="headerlink" title="3.substr"></a>3.substr</h2><p><code>str.substr(a,b)</code> generate new string from a to b</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">string str2 = str.<span class="built_in">substr</span>(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">cout &lt;&lt; str2;				<span class="comment">//el</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-swap"><a href="#4-swap" class="headerlink" title="4.swap"></a>4.swap</h2><p><code>string().swap(str);</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str = &quot;Hello World&quot;;</span><br><span class="line">string().swap(str);</span><br><span class="line">cout &lt;&lt; str;				//nothing</span><br></pre></td></tr></table></figure>
+
+<p>​                </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
