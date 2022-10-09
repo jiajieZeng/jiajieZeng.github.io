@@ -851,7 +851,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-10-09 13:04:57" itemprop="dateModified" datetime="2022-10-09T13:04:57+08:00">2022-10-09</time>
+        <time title="Modified: 2022-10-09 16:24:03" itemprop="dateModified" datetime="2022-10-09T16:24:03+08:00">2022-10-09</time>
       </span>
 
   
@@ -872,8 +872,7 @@
 <p><code>x = y‘</code></p>
 <p><code>y = x&#39; - a / b</code>;</p>
 <p>返回值是最大公约数，d。当a % d != 0的时候无解</p>
-<p><code>xi = x0 + k * b / gcd(a, b)</code></p>
-<p><code>yi = y0 + k * a / gcd(a, b)</code></p>
+<p><img src="D:\12345\source_posts\gcd\1665303794907.png" alt="1665303794907"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//求ax + by = gcd(a, b)的x, y</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span>&amp; x, <span class="keyword">int</span>&amp; y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!b) &#123;</span><br><span class="line">		x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> d = <span class="built_in">exgcd</span>(b, a % b, y, x);</span><br><span class="line">	y -= a / b * x;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="青蛙的约会"><a href="#青蛙的约会" class="headerlink" title="青蛙的约会"></a>青蛙的约会</h2><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>两只青蛙在网上相识了，它们聊得很开心，于是觉得很有必要见一面。它们很高兴地发现它们住在同一条纬度线上，于是它们约定各自朝西跳，直到碰面为止。可是它们出发之前忘记了一件很重要的事情，既没有问清楚对方的特征，也没有约定见面的具体位置。不过青蛙们都是很乐观的，它们觉得只要一直朝着某个方向跳下去，总能碰到对方的。但是除非这两只青蛙在同一时间跳到同一点上，不然是永远都不可能碰面的。为了帮助这两只乐观的青蛙，你被要求写一个程序来判断这两只青蛙是否能够碰面，会在什么时候碰面。</p>
