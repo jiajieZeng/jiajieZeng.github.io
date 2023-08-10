@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="浅谈Redis为什么需要Redis 数据从单表，演进出了分库分表 MySQL从单机演进出了级群 数据量增长 读写数据压力不断增加      数据分冷热  热数据：经常被访问到的数据   将热数据存储到内存中 从内存中直接读取，速度很快。  对于读数据，先看看数据在不在Redis里面，如果存在则直接返回给用户；如果不存在，从MySQL里面读取返回给用户，并写入到Redis中。 对于写数据，一种方法是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈Redis">
+<meta property="og:url" content="http://example.com/2023/08/10/%E6%B5%85%E8%B0%88Redis/index.html">
+<meta property="og:site_name" content="YoungJayz">
+<meta property="og:description" content="浅谈Redis为什么需要Redis 数据从单表，演进出了分库分表 MySQL从单机演进出了级群 数据量增长 读写数据压力不断增加      数据分冷热  热数据：经常被访问到的数据   将热数据存储到内存中 从内存中直接读取，速度很快。  对于读数据，先看看数据在不在Redis里面，如果存在则直接返回给用户；如果不存在，从MySQL里面读取返回给用户，并写入到Redis中。 对于写数据，一种方法是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/1.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/2.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/3.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/4.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/5.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/6.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/7.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/8.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/9.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/10.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/11.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/12.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/13.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/14.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/15.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/16.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/17.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/18.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/19.png">
+<meta property="og:image" content="d:/12345/source_posts/浅谈Redis/20.png">
+<meta property="article:published_time" content="2023-08-10T08:40:03.000Z">
+<meta property="article:modified_time" content="2023-08-10T12:16:17.612Z">
+<meta property="article:author" content="jiajieZeng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/12345/source_posts/浅谈Redis/1.png">
+
+
+<link rel="canonical" href="http://example.com/2023/08/10/%E6%B5%85%E8%B0%88Redis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/08/10/%E6%B5%85%E8%B0%88Redis/","path":"2023/08/10/浅谈Redis/","title":"浅谈Redis"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>浅谈Redis | YoungJayz</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">YoungJayz</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Keep著一顆上進的心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%85%E8%B0%88Redis"><span class="nav-number">1.</span> <span class="nav-text">浅谈Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Redis"><span class="nav-number">1.1.</span> <span class="nav-text">为什么需要Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">Redis基本工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%88%B0%E4%B8%80%E5%AE%9A%E7%A8%8B%E5%BA%A6%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96%E3%80%82"><span class="nav-number">1.2.1.</span> <span class="nav-text">Redis的数据可以做到一定程度的持久化。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E6%98%AF%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E6%89%80%E6%9C%89%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.2.</span> <span class="nav-text">Redis是单线程处理所有操作命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Redis应用案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%AD%BE%E5%88%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">连续签到</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.2.</span> <span class="nav-text">string数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5"><span class="nav-number">1.3.3.</span> <span class="nav-text">消息通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E8%A1%8C%E6%A6%9C"><span class="nav-number">1.3.5.</span> <span class="nav-text">排行榜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E6%B5%81"><span class="nav-number">1.3.6.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">1.3.7.</span> <span class="nav-text">分布式锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.4.</span> <span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7key%EF%BC%8C%E7%83%ADkey"><span class="nav-number">1.4.1.</span> <span class="nav-text">大key，热key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7key%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">大key的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7key%E7%9A%84%E5%8D%B1%E5%AE%B3"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">大key的危害</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E4%BE%A7%E4%BD%BF%E7%94%A8%E5%A4%A7key%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">业务侧使用大key的表现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E9%99%A4%E5%A4%A7key%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">消除大key的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%83%ADkey%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">热key的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E7%83%ADkey%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.1.6.</span> <span class="nav-text">解决热key的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E5%9C%BA%E6%99%AF"><span class="nav-number">1.4.2.</span> <span class="nav-text">慢查询场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%EF%BC%8C%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="nav-number">1.4.3.</span> <span class="nav-text">缓存穿透，缓存雪崩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E5%8D%B1%E5%AE%B3"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">缓存穿透的危害</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">如何减少缓存穿透</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">如何避免缓存雪崩</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jiajieZeng"
+      src="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+  <p class="site-author-name" itemprop="name">jiajieZeng</p>
+  <div class="site-description" itemprop="description">From SCNU Guangdong China</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiajieZeng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiajieZeng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1105489738@qq.com" title="E-Mail → mailto:1105489738@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/10/%E6%B5%85%E8%B0%88Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://img-blog.csdnimg.cn/2021091913052492.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAWnp6X0pheQ==,size_18,color_FFFFFF,t_70,g_se,x_16">
+      <meta itemprop="name" content="jiajieZeng">
+      <meta itemprop="description" content="From SCNU Guangdong China">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YoungJayz">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈Redis
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-08-10 16:40:03 / Modified: 20:16:17" itemprop="dateCreated datePublished" datetime="2023-08-10T16:40:03+08:00">2023-08-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="浅谈Redis"><a href="#浅谈Redis" class="headerlink" title="浅谈Redis"></a>浅谈Redis</h1><h2 id="为什么需要Redis"><a href="#为什么需要Redis" class="headerlink" title="为什么需要Redis"></a>为什么需要Redis</h2><ul>
+<li>数据从单表，演进出了分库分表</li>
+<li>MySQL从单机演进出了级群<ul>
+<li>数据量增长</li>
+<li>读写数据压力不断增加</li>
+</ul>
+</li>
+</ul>
+<p><img src="D:\12345\source_posts\浅谈Redis\1.png" alt="1"></p>
+<ul>
+<li><p>数据分冷热</p>
+<ul>
+<li>热数据：经常被访问到的数据</li>
+</ul>
+</li>
+<li><p>将热数据存储到内存中</p>
+<p>从内存中直接读取，速度很快。</p>
+<ul>
+<li>对于读数据，先看看数据在不在Redis里面，如果存在则直接返回给用户；如果不存在，从MySQL里面读取返回给用户，并写入到Redis中。</li>
+<li>对于写数据，一种方法是先写入MySQL。MySQL里会有一个binlog，binlog记录MySQL数据的变更，可以从binlog中发现变更的数据并写入Redis。</li>
+</ul>
+</li>
+</ul>
+<p><img src="D:\12345\source_posts\浅谈Redis\2.png" alt="2"></p>
+<h2 id="Redis基本工作原理"><a href="#Redis基本工作原理" class="headerlink" title="Redis基本工作原理"></a>Redis基本工作原理</h2><h3 id="Redis的数据可以做到一定程度的持久化。"><a href="#Redis的数据可以做到一定程度的持久化。" class="headerlink" title="Redis的数据可以做到一定程度的持久化。"></a>Redis的数据可以做到一定程度的持久化。</h3><ul>
+<li><p>Redis读写内存的时候会产生一条日志，写命令追加到AOF文件。假设服务器宕机，Redis重启的时候，会重放日志中的数据。</p>
+</li>
+<li><p>RDB文件保存了当前Redis当前的数据信息。启动的时候，先去读RDB文件，并找出有没有未执行的命令，如果有，通过AOF加载未执行的命令。</p>
+</li>
+</ul>
+<p>所以就是</p>
+<ul>
+<li>数据从内存中读写</li>
+<li>数据保存到硬盘上防止重启数据丢失<ul>
+<li>增量数据保存到AOF文件</li>
+<li>全量数据保存到RDB文件</li>
+</ul>
+</li>
+</ul>
+<p><img src="D:\12345\source_posts\浅谈Redis\3.png" alt="3"></p>
+<h3 id="Redis是单线程处理所有操作命令"><a href="#Redis是单线程处理所有操作命令" class="headerlink" title="Redis是单线程处理所有操作命令"></a>Redis是单线程处理所有操作命令</h3><p>发送两条命令的时候，在Redis的处理里面，是排队处理的。先到的会先执行。在做同步和分布式锁的时候，可以用到这个特性。</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\4.png" alt="4"></p>
+<h2 id="Redis应用案例"><a href="#Redis应用案例" class="headerlink" title="Redis应用案例"></a>Redis应用案例</h2><h3 id="连续签到"><a href="#连续签到" class="headerlink" title="连续签到"></a>连续签到</h3><ul>
+<li>用户每日有一次签到的机会，如果断签，连续签到计数将归0。连续签到的定义：每天必须在23:59:59前签到</li>
+</ul>
+<p>记录签到信息为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Key: cc_uid_1165894833417101</span><br><span class="line">value: <span class="number">252</span></span><br><span class="line">expireAt：后天的<span class="number">0</span>点</span><br></pre></td></tr></table></figure>
+
+<p>将用户id作为key，value是连续签到的日数，用到一个Redis的过期，对于一个key设定在指定的时间以后过期。</p>
+<p>主要代码如下：</p>
+<p>设置key并且设置过期时间<code>ExpireAt</code></p>
+<p>通过<code>Incr</code>来对value + 1</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// addContinuesDays 为用户签到续期</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addContinuesDays</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	key := fmt.Sprintf(continuesCheckKey, userID)</span><br><span class="line">	<span class="comment">// 1. 连续签到数+1</span></span><br><span class="line">	err := RedisClient.Incr(ctx, key).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Errorf(<span class="string">&quot;用户[%d]连续签到失败&quot;</span>, userID)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		expAt := beginningOfDay().Add(<span class="number">48</span> * time.Hour)</span><br><span class="line">		<span class="comment">// 2. 设置签到记录在后天的0点到期</span></span><br><span class="line">		<span class="keyword">if</span> err := RedisClient.ExpireAt(ctx, key, expAt).Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 3. 打印用户续签后的连续签到天数</span></span><br><span class="line">			day, err := getUserCheckInDays(ctx, userID)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="built_in">panic</span>(err)</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;用户[%d]连续签到：%d(天), 过期时间:%s&quot;</span>, userID, day, expAt.Format(<span class="string">&quot;2006-01-02 15:04:05&quot;</span>))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="string数据结构"><a href="#string数据结构" class="headerlink" title="string数据结构"></a>string数据结构</h3><p>数据结构-sds</p>
+<ul>
+<li>可以存储字符串，数字，二进制数据</li>
+<li>通常和expire配合使用</li>
+<li>场景：存储计数，Session</li>
+</ul>
+<p><code>string</code>是二进制安全的，存储的时候是存储在<code>buf</code>里面，buf会预先分配很多的空间。sds首先向左移动，得到：</p>
+<ul>
+<li><p>flags知道数据类型</p>
+</li>
+<li><p>alloc就是数据有多长</p>
+</li>
+<li><p>len是使用到了多少空间，比如如果alloc是5，此时hello使用的len是5</p>
+</li>
+<li><p>sds向右移动就可以得到完整的value</p>
+</li>
+</ul>
+<p><img src="D:\12345\source_posts\浅谈Redis\5.png" alt="5"></p>
+<h3 id="消息通知"><a href="#消息通知" class="headerlink" title="消息通知"></a>消息通知</h3><p>Redis使用list作为消息队列</p>
+<ul>
+<li>使用场景</li>
+</ul>
+<p>​        消息通知。例如当文章更新时，讲更新洪湖的文章推送到ES，用户就能搜索到最新的文章数据</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\6.png" alt="6"></p>
+<p>其实就是一个链表，顺序串联起来。list中只要有数据，就可以取出来。</p>
+<p>主要代码如下：</p>
+<p>使用<code>RPop</code>来rpop右边的数据。</p>
+<p>推送主要是使用<code>LPush</code>来lpush，每次lpush，golang程序都会同步地收到推送信息，即在list里取出数据。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ex04ConsumerPop 使用rpop逐条消费队列中的信息，数据从队列中移除</span></span><br><span class="line"><span class="comment">// 生成断使用: lpush ex05_list_0 AA BB</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ex04ConsumerPop</span><span class="params">(ctx context.Context, cInstParam common.CInstParams)</span></span> &#123;</span><br><span class="line">	routine := cInstParam.Routine</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		items, err := RedisClient.BRPop(ctx, <span class="number">0</span>, ex04ListenList).Result()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(common.LogFormat(routine, <span class="string">&quot;读取文章[%s]标题/正文，发送到ES更新索引&quot;</span>, items[<span class="number">1</span>]))</span><br><span class="line">		time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>list其实是QuickList</strong></p>
+<p>Quicklist由一个双向链表和listpack实现</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\7.png" alt="7"></p>
+<p>entry其实就是listpack，前面存储着元数据，后面是数据。Redis为了节省内存，会在一个entry里存储几个数据，压缩到 listpack里面。通过元数据可以提取出每个元素。</p>
+<p>tot-bytes记录整个内存空间有多大</p>
+<p>num-elements记录有多少数据</p>
+<p>里面的元素占的空间都是一样的，所以可以很方便地计算出元素位置。</p>
+<p><strong>详细的listpack</strong></p>
+<p><img src="D:\12345\source_posts\浅谈Redis\8.png" alt="8"></p>
+<h3 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h3><p>使用hash，每次访问，都从redis里面读出来。拼出来一个key，把每一个数值存到hash的key叫user_count_**的结构里面，其他的就是hash里面的value。</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\9.png" alt="9"></p>
+<p>redis命令<code>hgetall key</code>可以得到关于key的全部信息</p>
+<p>代码如下：</p>
+<p>通过piepline来批量写入数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Ex06InitUserCounter</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">	pipe := RedisClient.Pipeline()</span><br><span class="line">	userCounters := []<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</span><br><span class="line">		&#123;<span class="string">&quot;user_id&quot;</span>: <span class="string">&quot;1556564194374926&quot;</span>, <span class="string">&quot;got_digg_count&quot;</span>: <span class="number">10693</span>, <span class="string">&quot;got_view_count&quot;</span>: <span class="number">2238438</span>, <span class="string">&quot;followee_count&quot;</span>: <span class="number">176</span>, <span class="string">&quot;follower_count&quot;</span>: <span class="number">9895</span>, <span class="string">&quot;follow_collect_set_count&quot;</span>: <span class="number">0</span>, <span class="string">&quot;subscribe_tag_count&quot;</span>: <span class="number">95</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;user_id&quot;</span>: <span class="string">&quot;1111&quot;</span>, <span class="string">&quot;got_digg_count&quot;</span>: <span class="number">19</span>, <span class="string">&quot;got_view_count&quot;</span>: <span class="number">4</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;user_id&quot;</span>: <span class="string">&quot;2222&quot;</span>, <span class="string">&quot;got_digg_count&quot;</span>: <span class="number">1238</span>, <span class="string">&quot;follower_count&quot;</span>: <span class="number">379</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, counter := <span class="keyword">range</span> userCounters &#123;</span><br><span class="line">		uid, err := strconv.ParseInt(counter[<span class="string">&quot;user_id&quot;</span>].(<span class="keyword">string</span>), <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">		key := GetUserCounterKey(uid)</span><br><span class="line">		rw, err := pipe.Del(ctx, key).Result()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;del %s, rw=%d\n&quot;</span>, key, rw)</span><br><span class="line">		&#125;</span><br><span class="line">		_, err = pipe.HMSet(ctx, key, counter).Result()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">&quot;设置 uid=%d, key=%s\n&quot;</span>, uid, key)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 批量执行上面for循环设置好的hmset命令</span></span><br><span class="line">	_, err := pipe.Exec(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="comment">// 报错后进行一次额外尝试</span></span><br><span class="line">		_, err = pipe.Exec(ctx)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再通过不同的操作来获取信息</p>
+<p>通过<code>hmget</code>获取信息即golang里面的<code>Hget</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetUserCounterKey</span><span class="params">(userID <span class="keyword">int64</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> fmt.Sprintf(<span class="string">&quot;%s_%d&quot;</span>, Ex05UserCountKey, userID)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetUserCounter</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	pipe := RedisClient.Pipeline()</span><br><span class="line">	GetUserCounterKey(userID)</span><br><span class="line">	pipe.HGetAll(ctx, GetUserCounterKey(userID))</span><br><span class="line">	cmders, err := pipe.Exec(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, cmder := <span class="keyword">range</span> cmders &#123;</span><br><span class="line">		counterMap, err := cmder.(*redis.MapStringStringCmd).Result()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> field, value := <span class="keyword">range</span> counterMap &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;%s: %s\n&quot;</span>, field, value)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// IncrByUserLike 点赞数+1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IncrByUserLike</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	incrByUserField(ctx, userID, <span class="string">&quot;got_digg_count&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// IncrByUserCollect 收藏数+1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IncrByUserCollect</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	incrByUserField(ctx, userID, <span class="string">&quot;follow_collect_set_count&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DecrByUserLike 点赞数-1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DecrByUserLike</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	decrByUserField(ctx, userID, <span class="string">&quot;got_digg_count&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DecrByUserCollect 收藏数-1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DecrByUserCollect</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	decrByUserField(ctx, userID, <span class="string">&quot;follow_collect_set_count&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">incrByUserField</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>, field <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	change(ctx, userID, field, <span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">decrByUserField</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>, field <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	change(ctx, userID, field, <span class="number">-1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">change</span><span class="params">(ctx context.Context, userID <span class="keyword">int64</span>, field <span class="keyword">string</span>, incr <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	redisKey := GetUserCounterKey(userID)</span><br><span class="line">	before, err := RedisClient.HGet(ctx, redisKey, field).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	beforeInt, err := strconv.ParseInt(before, <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> beforeInt+incr &lt; <span class="number">0</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;禁止变更计数，计数变更后小于0. %d + (%d) = %d\n&quot;</span>, beforeInt, incr, beforeInt+incr)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;user_id: %d\n更新前\n%s = %s\n--------\n&quot;</span>, userID, field, before)</span><br><span class="line">	_, err = RedisClient.HIncrBy(ctx, redisKey, field, incr).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// fmt.Printf(&quot;更新记录[%d]:%d\n&quot;, userID, num)</span></span><br><span class="line">	count, err := RedisClient.HGet(ctx, redisKey, field).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;user_id: %d\n更新后\n%s = %s\n--------\n&quot;</span>, userID, field, count)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Hash数据结构dict</strong></p>
+<p><img src="D:\12345\source_posts\浅谈Redis\10.png" alt="10"></p>
+<p>hash的时间复杂度是<code>O(1)</code></p>
+<p>rehash的方法有两种。</p>
+<ul>
+<li>rehash：rehash操作是将ht[0]中的数据，全部迁移到ht[1]中。数据量小的场景下，直接将数据从ht[0]拷贝到ht[1]速度是较快的。数据量大的场景，例如存有上百万的KV时，迁移过程将会明显阻塞用户请求。</li>
+<li>渐进式rehash：为避免出现这种情况，使用了rehash方案。基本原理就是，每次用户访问时都会迁移少量数据。将整个迁移过程，平摊到所有的访问用不请求过程中。</li>
+</ul>
+<h3 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h3><p>积分变化时，排名要实时变更</p>
+<p>结合dict后，可实现通过key操作跳表的功能</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\11.png" alt="11"></p>
+<p>通过zset来实现排名。</p>
+<p>函数<code>ZAdd</code>可以帮助我们将元素插入zset里面。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Ex06InitUserScore</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">	initList := []redis.Z&#123;</span><br><span class="line">		&#123;Member: <span class="string">&quot;user1&quot;</span>, Score: <span class="number">10</span>&#125;, &#123;Member: <span class="string">&quot;user2&quot;</span>, Score: <span class="number">232</span>&#125;, &#123;Member: <span class="string">&quot;user3&quot;</span>, Score: <span class="number">129</span>&#125;,</span><br><span class="line">		&#123;Member: <span class="string">&quot;user4&quot;</span>, Score: <span class="number">232</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 清空榜单</span></span><br><span class="line">	<span class="keyword">if</span> err := RedisClient.Del(ctx, Ex06RankKey).Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	nums, err := RedisClient.ZAdd(ctx, Ex06RankKey, initList...).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">&quot;初始化榜单Item数量:%d\n&quot;</span>, nums)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>redis通过<code>zreverserange zset 0 100 withscores</code>就可以倒排序</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 榜单逆序输出</span></span><br><span class="line"><span class="comment">// ZRANGE ex06_rank_zset +inf -inf BYSCORE  rev WITHSCORES</span></span><br><span class="line"><span class="comment">// 正序输出</span></span><br><span class="line"><span class="comment">// ZRANGE ex06_rank_zset 0 -1 WITHSCORES</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetRevOrderAllList</span><span class="params">(ctx context.Context, limit, offset <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	resList, err := RedisClient.ZRevRangeWithScores(ctx, Ex06RankKey, <span class="number">0</span>, <span class="number">-1</span>).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;\n榜单:\n&quot;</span>)</span><br><span class="line">	<span class="keyword">for</span> i, z := <span class="keyword">range</span> resList &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;第%d名 %s\t%f\n&quot;</span>, i+<span class="number">1</span>, z.Member, z.Score)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetOrderListByPage</span><span class="params">(ctx context.Context, offset, pageSize <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// zrange ex06_rank_zset 300 0 byscore rev limit 1 2 withscores // 取300分到0分之间的排名</span></span><br><span class="line">	<span class="comment">// zrange ex06_rank_zset -inf +inf byscore withscores 正序输出</span></span><br><span class="line">	<span class="comment">// ZRANGE ex06_rank_zset +inf -inf BYSCORE  REV WITHSCORES 逆序输出所有排名</span></span><br><span class="line">	<span class="comment">// zrange ex06_rank_zset +inf -inf byscore rev limit 0 2 withscores 逆序分页输出排名</span></span><br><span class="line">	zRangeArgs := redis.ZRangeArgs&#123;</span><br><span class="line">		Key:     Ex06RankKey,</span><br><span class="line">		ByScore: <span class="literal">true</span>,</span><br><span class="line">		Rev:     <span class="literal">true</span>,</span><br><span class="line">		Start:   <span class="string">&quot;-inf&quot;</span>,</span><br><span class="line">		Stop:    <span class="string">&quot;+inf&quot;</span>,</span><br><span class="line">		Offset:  offset,</span><br><span class="line">		Count:   pageSize,</span><br><span class="line">	&#125;</span><br><span class="line">	resList, err := RedisClient.ZRangeArgsWithScores(ctx, zRangeArgs).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;\n榜单(offest=%d, pageSize=%d):\n&quot;</span>, offset, pageSize)</span><br><span class="line">	offNum := <span class="keyword">int</span>(pageSize * offset)</span><br><span class="line">	<span class="keyword">for</span> i, z := <span class="keyword">range</span> resList &#123;</span><br><span class="line">		rank := i + <span class="number">1</span> + offNum</span><br><span class="line">		fmt.Printf(<span class="string">&quot;第%d名 %s\t%f\n&quot;</span>, rank, z.Member, z.Score)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>zskiplist数据结构</strong></p>
+<p>跳表结构如下：</p>
+<p>查找数字7的路径，head,3,3,7</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\12.png" alt="12"></p>
+<p>通过跳跃表找到自己的元素，然后通过dict来存储元素里面的值</p>
+<p>结合dict后，可实现通过key操作跳表的功能</p>
+<p>​    <code>ZINCRBY myzset 2 &quot;Alex&quot;</code></p>
+<p>​    <code>ZSCORE myzset &quot;Alex&quot;</code></p>
+<p><img src="D:\12345\source_posts\浅谈Redis\13.png" alt="13"></p>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>要求1秒内放行的请求为N，超过N则禁止访问</p>
+<p>Key:  comment_freq_limit_1671356046</p>
+<p>对这个Key调用incr，超过限制N则禁止访问</p>
+<p>1671356046 是当前时间戳</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\14.png" alt="13"></p>
+<p>主要代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ex03Work</span><span class="params">(ctx context.Context, cInstParam common.CInstParams)</span></span> &#123;</span><br><span class="line">	routine := cInstParam.Routine</span><br><span class="line">	eventLogger := cInstParam.ConcurrentEventLogger</span><br><span class="line">	key := ex03LimitKey(time.Now())</span><br><span class="line">	currentQPS, err := RedisClient.Incr(ctx, key).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> || err == redis.Nil &#123;</span><br><span class="line">		err = RedisClient.Incr(ctx, ex03LimitKey(time.Now())).Err()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> currentQPS &gt; ex03MaxQPS &#123;</span><br><span class="line">		<span class="comment">// 超过流量限制，请求被限制</span></span><br><span class="line">		eventLogger.Append(common.EventLog&#123;</span><br><span class="line">			EventTime: time.Now(),</span><br><span class="line">			Log:       common.LogFormat(routine, <span class="string">&quot;被限流[%d]&quot;</span>, currentQPS),</span><br><span class="line">		&#125;)</span><br><span class="line">		<span class="comment">// sleep 模拟业务逻辑耗时</span></span><br><span class="line">		time.Sleep(<span class="number">50</span> * time.Millisecond)</span><br><span class="line">		err = RedisClient.Decr(ctx, key).Err()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 流量放行</span></span><br><span class="line">		eventLogger.Append(common.EventLog&#123;</span><br><span class="line">			EventTime: time.Now(),</span><br><span class="line">			Log:       common.LogFormat(routine, <span class="string">&quot;流量放行[%d]&quot;</span>, currentQPS),</span><br><span class="line">		&#125;)</span><br><span class="line">		atomic.AddInt32(&amp;accessQueryNum, <span class="number">1</span>)</span><br><span class="line">		time.Sleep(<span class="number">20</span> * time.Millisecond)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h3><p>并发场景，要求一次只能有一个协程执行。执行完成后，其它等待中的协程才能执行。</p>
+<p>可以使用redis的setnx实现，利用了两个特性Redis是单线程执行命令setnx只有未设置过才能执行成功</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\15.png" alt="15"></p>
+<p>通过<code>setnx</code>来设置key，如果key存在，就抢不到锁。同时要设置锁的过期时间，否则会发生死锁。</p>
+<p><strong>只是体验SetNX的特性，不是高可用的分布式锁实现</strong></p>
+<p>该实现存在的问题:</p>
+<p>(1) 业务超时解锁，导致并发问题。业务执行时间超过锁超时时间</p>
+<p>(2) redis主备切换临界点问题。主备切换后，A持有的锁还未同步到新的主节点时，B可在新主节点获取锁，导致并发问题。</p>
+<p>(3) redis集群脑裂，导致出现多个主节点</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ex02Work</span><span class="params">(ctx context.Context, cInstParam common.CInstParams)</span></span> &#123;</span><br><span class="line">	routine := cInstParam.Routine</span><br><span class="line">	eventLogger := cInstParam.ConcurrentEventLogger</span><br><span class="line">	<span class="keyword">defer</span> ex02ReleaseLock(ctx, routine, eventLogger)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="comment">// 1. 尝试获取锁</span></span><br><span class="line">		<span class="comment">// exp - 锁过期设置,避免异常死锁</span></span><br><span class="line">		acquired, err := RedisClient.SetNX(ctx, resourceKey, routine, exp).Result() <span class="comment">// 尝试获取锁</span></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			eventLogger.Append(common.EventLog&#123;</span><br><span class="line">				EventTime: time.Now(), Log: fmt.Sprintf(<span class="string">&quot;[%s] error routine[%d], %v&quot;</span>, time.Now().Format(time.RFC3339Nano), routine, err),</span><br><span class="line">			&#125;)</span><br><span class="line">			<span class="built_in">panic</span>(err)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> acquired &#123;</span><br><span class="line">			<span class="comment">// 2. 成功获取锁</span></span><br><span class="line">			eventLogger.Append(common.EventLog&#123;</span><br><span class="line">				EventTime: time.Now(), Log: fmt.Sprintf(<span class="string">&quot;[%s] routine[%d] 获取锁&quot;</span>, time.Now().Format(time.RFC3339Nano), routine),</span><br><span class="line">			&#125;)</span><br><span class="line">			<span class="comment">// 3. sleep 模拟业务逻辑耗时</span></span><br><span class="line">			time.Sleep(<span class="number">10</span> * time.Millisecond)</span><br><span class="line">			eventLogger.Append(common.EventLog&#123;</span><br><span class="line">				EventTime: time.Now(), Log: fmt.Sprintf(<span class="string">&quot;[%s] routine[%d] 完成业务逻辑&quot;</span>, time.Now().Format(time.RFC3339Nano), routine),</span><br><span class="line">			&#125;)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 没有获得锁，等待后重试</span></span><br><span class="line">			time.Sleep(<span class="number">100</span> * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="大key，热key"><a href="#大key，热key" class="headerlink" title="大key，热key"></a>大key，热key</h3><h4 id="大key的定义"><a href="#大key的定义" class="headerlink" title="大key的定义"></a><strong>大key的定义</strong></h4><table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">大key标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">String类型</td>
+<td align="center">value的字节数大于10KB即为大key</td>
+</tr>
+<tr>
+<td align="center">Hash/Set/Zset/list等复杂数据结构类型</td>
+<td align="center">元素个数大于5000个或总value字节数大于10MB即为大key</td>
+</tr>
+</tbody></table>
+<h4 id="大key的危害"><a href="#大key的危害" class="headerlink" title="大key的危害"></a><strong>大key的危害</strong></h4><ul>
+<li>读取成本高</li>
+<li>容易导致慢查询（过期，删除）</li>
+<li>主从复制异常，服务阻塞</li>
+<li>从库在写入的时候过长，导致从库异常，无法正常响应请求</li>
+</ul>
+<h4 id="业务侧使用大key的表现"><a href="#业务侧使用大key的表现" class="headerlink" title="业务侧使用大key的表现"></a><strong>业务侧使用大key的表现</strong></h4><ul>
+<li>请求Redis超时报错</li>
+</ul>
+<p>redis命令执行过程如下：</p>
+<p>value很大的时候，读写耗时就会边长。则一段时间内，这个节点就不可用。</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\16.png" alt="16"></p>
+<h4 id="消除大key的方法"><a href="#消除大key的方法" class="headerlink" title="消除大key的方法"></a><strong>消除大key的方法</strong></h4><ul>
+<li><p>拆分</p>
+<ul>
+<li><p>将大key拆分为小key，例如一个String拆分成多个String</p>
+</li>
+<li><p>中括号3告诉我们，70011拆分了三个部分，所以可以取出后面的数据，拼接并返回</p>
+</li>
+<li><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Key</th>
+<th align="center">Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">拆分前</td>
+<td align="center">article:70011</td>
+<td align="center"><code>abcdefg</code></td>
+</tr>
+<tr>
+<td align="center">拆分后</td>
+<td align="center">article:70011</td>
+<td align="center"><code>[3][70011]abcd</code></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">article:70011_2</td>
+<td align="center"><code>[70011]ef</code></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">article:70011_3</td>
+<td align="center"><code>[70011]g</code></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>压缩</p>
+<ul>
+<li>将value压缩后写入redis，读取时解压后再使用。压缩算法可以是gzip，snappy，lz4等。通常情况下，一个压缩算法压缩率高，则解压耗时就长。需要对实际数据进行测试后，选择一个合适的压缩算法。如果存储的是JSON字符串，可以考虑MessagePack进行序列化。</li>
+</ul>
+<p>重点考虑解压缩的时间，因为的写少读多。</p>
+</li>
+<li><p>集合类结构hash，list，set，zset</p>
+<ul>
+<li>拆分：可以使用hash取余，位掩码方式决定放在哪个key中</li>
+<li>区分冷热：如榜单列表场景使用zset，只缓存前10页数据，后续数据走db</li>
+</ul>
+</li>
+</ul>
+<h4 id="热key的定义"><a href="#热key的定义" class="headerlink" title="热key的定义"></a><strong>热key的定义</strong></h4><p>用户访问一个key的QPS特别高，导致Server实例出现CPU负载突增或者不均的情况。</p>
+<p>热key没有明确的标准，QPS超过500就有可能被识别为热key</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\17.png" alt="17"></p>
+<h4 id="解决热key的方法"><a href="#解决热key的方法" class="headerlink" title="解决热key的方法"></a>解决热key的方法</h4><ul>
+<li><p>设置Localcache</p>
+<p>再访问Redis前，再业务服务侧设置Localcache，降低访问Redis的QPS。Localcache中缓存过期或未命中，则从Redis中将数据更新到LocalCache。Java的Guava，Golang的Bigcache就是这类Localcache。</p>
+<p>其实就是在当前Server本机的内存进行缓存。</p>
+<p>缓存过期管理和分片，是因为这样缓存，会导致在短暂的时间内，Localcache的数据和Redis里面的数据丢失一致性。</p>
+<p>缺点是每个程序都要去写一个Localcache。</p>
+</li>
+</ul>
+<p><img src="D:\12345\source_posts\浅谈Redis\18.png" alt="18"></p>
+<ul>
+<li><p>拆分</p>
+<p>将key:value这一个热key复制写入多份，例如key1:value, key2:value，访问的时候访问多个key，但value是同一个，以此将QPS分散到不同实例上，降低负载。代价是，更新时需要更新多个key，存在数据短暂不一致的风险。</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\19.png" alt="19"></p>
+</li>
+<li><p>使用Redis代理的热key承载能力</p>
+<p>设置具有热key承载能力的访问代理。本质上是结合了“热key发现”，“LocalCache”两个功能。查询一个key的时候，Proxy会统计key在一定时间内key被访问多少次，如果打到热key，Proxy用自己的Localcache取缓存数据，以后再访问热key，Proxy会直接返回数据。</p>
+<p><img src="D:\12345\source_posts\浅谈Redis\20.png" alt="20"></p>
+</li>
+</ul>
+<h3 id="慢查询场景"><a href="#慢查询场景" class="headerlink" title="慢查询场景"></a>慢查询场景</h3><p><strong>容易导致Redis慢查询的操作</strong></p>
+<ul>
+<li><p>批量操作一次性传入过多的kv，如mset/hmset/sadd/zadd等O(n)操作</p>
+<p>建议单批次不要超过100，超过100之后性能下降明显</p>
+</li>
+<li><p>zset大部分命令都是O(logn)，当大小超过5k以上，简单的zadd/zrem也可能导致慢查询</p>
+</li>
+<li><p>操作的单个value过大，超过10KB。避免使用大key</p>
+</li>
+<li><p>对打key的delete/wxpire操作也可能导致慢查询，Reids4.0之前不支持异步删除unlink，大key删除会阻塞Redis</p>
+</li>
+</ul>
+<h3 id="缓存穿透，缓存雪崩"><a href="#缓存穿透，缓存雪崩" class="headerlink" title="缓存穿透，缓存雪崩"></a>缓存穿透，缓存雪崩</h3><p><strong>缓存穿透：</strong>热点数据绕过缓存，直接查询数据库（redis宕机）</p>
+<p><strong>缓存雪崩：</strong>大量缓存同时过期</p>
+<h4 id="缓存穿透的危害"><a href="#缓存穿透的危害" class="headerlink" title="缓存穿透的危害"></a>缓存穿透的危害</h4><ul>
+<li><p>查询一个一定不存在的数据</p>
+<p>通常不会缓存不存在的数据，这类查询都会直接打到db，如果有系统bug或人为攻击，那么容易导致db响应慢甚至宕机</p>
+</li>
+<li><p>缓存过期时</p>
+<p>在高并发场景下，一个热key如果过期，会有大量请求同时击穿至db，容易影相db的性能和稳定。同一时间有大量key集中过期时，也会导致大量请求打到db上，导致查询变慢，甚至出现db无法响应新的查询</p>
+</li>
+</ul>
+<h4 id="如何减少缓存穿透"><a href="#如何减少缓存穿透" class="headerlink" title="如何减少缓存穿透"></a>如何减少缓存穿透</h4><ul>
+<li><p>缓存空置</p>
+<p>如果一个不存在的userID。这个id在缓存和数据库中都不存在。则可以缓存一个空值，下次再查缓存直接返回空值。</p>
+</li>
+<li><p>布隆过滤器</p>
+<p>通过bloom filter算法来存储合法key，得益于该算法超高的压缩率，只需占用极小的空间就能存储大量key值。</p>
+</li>
+</ul>
+<h4 id="如何避免缓存雪崩"><a href="#如何避免缓存雪崩" class="headerlink" title="如何避免缓存雪崩"></a>如何避免缓存雪崩</h4><ul>
+<li><p>缓存控制</p>
+<p>将缓存失效时间分散开，比如在原有的失效时间基础上增加一个随机值，例如不同key过期时间，可以设置为10分1秒过期，10分23秒过期，10分8秒过期。单位秒部分就是随机时间，这样过期时间就分散开了。对于热点数据，过期时间尽量设置得长一些，冷门的数据可以相对设置过期时间短一些。</p>
+</li>
+<li><p>使用缓存集群，避免单机宕机造成的缓存雪崩</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/21/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/" rel="prev" title="计算几何基础">
+                  <i class="fa fa-chevron-left"></i> 计算几何基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajieZeng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
